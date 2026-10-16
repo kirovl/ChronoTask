@@ -1,5 +1,7 @@
 # ChronoTask
 
+**English** | [简体中文](README.zh-CN.md)
+
 A modern, lightweight, coroutine-native task scheduling framework for Kotlin and Java on the JVM.
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
