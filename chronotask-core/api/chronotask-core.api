@@ -1,0 +1,1130 @@
+public final class io/github/chronotask/ChronoTask {
+	public static final field INSTANCE Lio/github/chronotask/ChronoTask;
+	public static final fun create ()Lio/github/chronotask/engine/ChronoTaskEngine;
+	public static final fun create (Lio/github/chronotask/engine/EngineConfig;)Lio/github/chronotask/engine/ChronoTaskEngine;
+	public static final fun newTask (Ljava/lang/String;)Lio/github/chronotask/builder/TaskBuilder;
+}
+
+public final class io/github/chronotask/annotation/AnnotationConcurrency : java/lang/Enum {
+	public static final field ALLOW Lio/github/chronotask/annotation/AnnotationConcurrency;
+	public static final field QUEUE_ONE Lio/github/chronotask/annotation/AnnotationConcurrency;
+	public static final field SERIAL Lio/github/chronotask/annotation/AnnotationConcurrency;
+	public static final field SKIP_IF_RUNNING Lio/github/chronotask/annotation/AnnotationConcurrency;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/chronotask/annotation/AnnotationConcurrency;
+	public static fun values ()[Lio/github/chronotask/annotation/AnnotationConcurrency;
+}
+
+public final class io/github/chronotask/annotation/AnnotationMisfire : java/lang/Enum {
+	public static final field CATCH_UP Lio/github/chronotask/annotation/AnnotationMisfire;
+	public static final field FIRE_ONCE Lio/github/chronotask/annotation/AnnotationMisfire;
+	public static final field SKIP Lio/github/chronotask/annotation/AnnotationMisfire;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/chronotask/annotation/AnnotationMisfire;
+	public static fun values ()[Lio/github/chronotask/annotation/AnnotationMisfire;
+}
+
+public abstract interface annotation class io/github/chronotask/annotation/Cron : java/lang/annotation/Annotation {
+	public abstract fun catchUpLimit ()I
+	public abstract fun concurrency ()Lio/github/chronotask/annotation/AnnotationConcurrency;
+	public abstract fun dialect ()Lio/github/chronotask/cron/CronDialect;
+	public abstract fun dispatcher ()Ljava/lang/String;
+	public abstract fun enabled ()Z
+	public abstract fun expression ()Ljava/lang/String;
+	public abstract fun id ()Ljava/lang/String;
+	public abstract fun misfire ()Lio/github/chronotask/annotation/AnnotationMisfire;
+	public abstract fun name ()Ljava/lang/String;
+	public abstract fun serialOverflow ()Lio/github/chronotask/model/QueueOverflowPolicy;
+	public abstract fun serialQueueSize ()I
+	public abstract fun zone ()Ljava/lang/String;
+}
+
+public abstract interface annotation class io/github/chronotask/annotation/Once : java/lang/annotation/Annotation {
+	public abstract fun catchUpLimit ()I
+	public abstract fun concurrency ()Lio/github/chronotask/annotation/AnnotationConcurrency;
+	public abstract fun delayMs ()J
+	public abstract fun dispatcher ()Ljava/lang/String;
+	public abstract fun enabled ()Z
+	public abstract fun id ()Ljava/lang/String;
+	public abstract fun misfire ()Lio/github/chronotask/annotation/AnnotationMisfire;
+	public abstract fun name ()Ljava/lang/String;
+	public abstract fun serialOverflow ()Lio/github/chronotask/model/QueueOverflowPolicy;
+	public abstract fun serialQueueSize ()I
+}
+
+public final class io/github/chronotask/annotation/ScheduleMode : java/lang/Enum {
+	public static final field FIXED_DELAY Lio/github/chronotask/annotation/ScheduleMode;
+	public static final field FIXED_RATE Lio/github/chronotask/annotation/ScheduleMode;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/chronotask/annotation/ScheduleMode;
+	public static fun values ()[Lio/github/chronotask/annotation/ScheduleMode;
+}
+
+public abstract interface annotation class io/github/chronotask/annotation/Scheduled : java/lang/annotation/Annotation {
+	public abstract fun catchUpLimit ()I
+	public abstract fun concurrency ()Lio/github/chronotask/annotation/AnnotationConcurrency;
+	public abstract fun dispatcher ()Ljava/lang/String;
+	public abstract fun enabled ()Z
+	public abstract fun id ()Ljava/lang/String;
+	public abstract fun initialDelayMs ()J
+	public abstract fun intervalMs ()J
+	public abstract fun misfire ()Lio/github/chronotask/annotation/AnnotationMisfire;
+	public abstract fun mode ()Lio/github/chronotask/annotation/ScheduleMode;
+	public abstract fun name ()Ljava/lang/String;
+	public abstract fun serialOverflow ()Lio/github/chronotask/model/QueueOverflowPolicy;
+	public abstract fun serialQueueSize ()I
+}
+
+public abstract interface annotation class io/github/chronotask/annotation/TickTask : java/lang/annotation/Annotation {
+	public abstract fun catchUpLimit ()I
+	public abstract fun concurrency ()Lio/github/chronotask/annotation/AnnotationConcurrency;
+	public abstract fun dispatcher ()Ljava/lang/String;
+	public abstract fun enabled ()Z
+	public abstract fun id ()Ljava/lang/String;
+	public abstract fun initialDelayMs ()J
+	public abstract fun intervalMs ()J
+	public abstract fun misfire ()Lio/github/chronotask/annotation/AnnotationMisfire;
+	public abstract fun name ()Ljava/lang/String;
+	public abstract fun serialOverflow ()Lio/github/chronotask/model/QueueOverflowPolicy;
+	public abstract fun serialQueueSize ()I
+}
+
+public final class io/github/chronotask/builder/TaskBuilder {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun allowConcurrent ()Lio/github/chronotask/builder/TaskBuilder;
+	public final fun build ()Lio/github/chronotask/model/TaskDefinition;
+	public final fun concurrencyPolicy (Lio/github/chronotask/model/ConcurrencyPolicy;)Lio/github/chronotask/builder/TaskBuilder;
+	public final fun cron (Ljava/lang/String;Ljava/time/ZoneId;)Lio/github/chronotask/builder/TaskBuilder;
+	public final fun cron (Ljava/lang/String;Ljava/time/ZoneId;Lio/github/chronotask/cron/CronDialect;)Lio/github/chronotask/builder/TaskBuilder;
+	public final fun custom (Lio/github/chronotask/trigger/TriggerCalculator;)Lio/github/chronotask/builder/TaskBuilder;
+	public final fun dispatcher (Ljava/lang/String;)Lio/github/chronotask/builder/TaskBuilder;
+	public final fun enabled (Z)Lio/github/chronotask/builder/TaskBuilder;
+	public final fun execute (Lio/github/chronotask/job/JavaTaskExecutable;)Lio/github/chronotask/builder/TaskBuilder;
+	public final fun execute (Lio/github/chronotask/job/TaskExecutable;)Lio/github/chronotask/builder/TaskBuilder;
+	public final fun executeRunnable (Ljava/lang/Runnable;)Lio/github/chronotask/builder/TaskBuilder;
+	public final fun fixedDelay (Ljava/time/Duration;)Lio/github/chronotask/builder/TaskBuilder;
+	public final fun fixedDelay (Ljava/time/Duration;Ljava/time/Duration;)Lio/github/chronotask/builder/TaskBuilder;
+	public final fun fixedRate (Ljava/time/Duration;)Lio/github/chronotask/builder/TaskBuilder;
+	public final fun fixedRate (Ljava/time/Duration;Ljava/time/Duration;)Lio/github/chronotask/builder/TaskBuilder;
+	public final fun misfirePolicy (Lio/github/chronotask/model/MisfirePolicy;)Lio/github/chronotask/builder/TaskBuilder;
+	public final fun name (Ljava/lang/String;)Lio/github/chronotask/builder/TaskBuilder;
+	public final fun onMisfireCatchUp (I)Lio/github/chronotask/builder/TaskBuilder;
+	public final fun onMisfireFireOnce ()Lio/github/chronotask/builder/TaskBuilder;
+	public final fun onMisfireSkip ()Lio/github/chronotask/builder/TaskBuilder;
+	public final fun once (Ljava/time/Duration;)Lio/github/chronotask/builder/TaskBuilder;
+	public final fun queueOne ()Lio/github/chronotask/builder/TaskBuilder;
+	public final fun serial (I)Lio/github/chronotask/builder/TaskBuilder;
+	public final fun serial (ILio/github/chronotask/model/QueueOverflowPolicy;)Lio/github/chronotask/builder/TaskBuilder;
+	public final fun skipIfRunning ()Lio/github/chronotask/builder/TaskBuilder;
+}
+
+public abstract interface class io/github/chronotask/clock/ChronoClock {
+	public static final field Companion Lio/github/chronotask/clock/ChronoClock$Companion;
+	public static final field SYSTEM Lio/github/chronotask/clock/ChronoClock;
+	public fun currentTimeMillis ()J
+	public abstract fun now ()Ljava/time/Instant;
+}
+
+public final class io/github/chronotask/clock/ChronoClock$Companion {
+}
+
+public abstract interface class io/github/chronotask/clock/ChronoTimer {
+	public static final field Companion Lio/github/chronotask/clock/ChronoTimer$Companion;
+	public static final field SYSTEM Lio/github/chronotask/clock/ChronoTimer;
+	public abstract fun delay (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun delay (Ljava/time/Duration;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun delay$suspendImpl (Lio/github/chronotask/clock/ChronoTimer;Ljava/time/Duration;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun delay-VtjQ1oo (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun delay-VtjQ1oo$suspendImpl (Lio/github/chronotask/clock/ChronoTimer;JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun sleepUntil (Ljava/time/Instant;Lio/github/chronotask/clock/ChronoClock;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun sleepUntil$default (Lio/github/chronotask/clock/ChronoTimer;Ljava/time/Instant;Lio/github/chronotask/clock/ChronoClock;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+	public static synthetic fun sleepUntil$suspendImpl (Lio/github/chronotask/clock/ChronoTimer;Ljava/time/Instant;Lio/github/chronotask/clock/ChronoClock;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class io/github/chronotask/clock/ChronoTimer$Companion {
+}
+
+public final class io/github/chronotask/clock/DefaultChronoClock : io/github/chronotask/clock/ChronoClock {
+	public static final field INSTANCE Lio/github/chronotask/clock/DefaultChronoClock;
+	public fun currentTimeMillis ()J
+	public fun now ()Ljava/time/Instant;
+}
+
+public final class io/github/chronotask/clock/DefaultChronoTimer : io/github/chronotask/clock/ChronoTimer {
+	public static final field INSTANCE Lio/github/chronotask/clock/DefaultChronoTimer;
+	public fun delay (JLkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public abstract interface class io/github/chronotask/concurrency/ConcurrencyController : java/lang/AutoCloseable {
+	public abstract fun activeCount (Ljava/lang/String;)I
+	public abstract fun cancelAll (Ljava/lang/String;)I
+	public abstract fun cancelExecution (Ljava/lang/String;Lio/github/chronotask/execution/ExecutionId;)Z
+	public abstract fun close ()V
+	public abstract fun queuedCount (Ljava/lang/String;)I
+	public abstract fun submit (Lio/github/chronotask/model/TaskDefinition;Lio/github/chronotask/execution/TaskExecution;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class io/github/chronotask/concurrency/DefaultConcurrencyController : io/github/chronotask/concurrency/ConcurrencyController {
+	public fun <init> ()V
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;)V
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lkotlinx/coroutines/CoroutineDispatcher;)V
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lkotlinx/coroutines/CoroutineDispatcher;Lio/github/chronotask/execution/TaskRunner;)V
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lkotlinx/coroutines/CoroutineDispatcher;Lio/github/chronotask/execution/TaskRunner;Lio/github/chronotask/execution/TaskErrorHandler;)V
+	public fun <init> (Lkotlinx/coroutines/CoroutineScope;Lkotlinx/coroutines/CoroutineDispatcher;Lio/github/chronotask/execution/TaskRunner;Lio/github/chronotask/execution/TaskErrorHandler;Lio/github/chronotask/execution/ExecutionListener;)V
+	public synthetic fun <init> (Lkotlinx/coroutines/CoroutineScope;Lkotlinx/coroutines/CoroutineDispatcher;Lio/github/chronotask/execution/TaskRunner;Lio/github/chronotask/execution/TaskErrorHandler;Lio/github/chronotask/execution/ExecutionListener;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun activeCount (Ljava/lang/String;)I
+	public fun cancelAll (Ljava/lang/String;)I
+	public fun cancelExecution (Ljava/lang/String;Lio/github/chronotask/execution/ExecutionId;)Z
+	public fun close ()V
+	public fun queuedCount (Ljava/lang/String;)I
+	public fun submit (Lio/github/chronotask/model/TaskDefinition;Lio/github/chronotask/execution/TaskExecution;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class io/github/chronotask/cron/CronDialect : java/lang/Enum {
+	public static final field QUARTZ Lio/github/chronotask/cron/CronDialect;
+	public static final field UNIX Lio/github/chronotask/cron/CronDialect;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/chronotask/cron/CronDialect;
+	public static fun values ()[Lio/github/chronotask/cron/CronDialect;
+}
+
+public final class io/github/chronotask/cron/CronExpression {
+	public fun <init> (Ljava/lang/String;Lio/github/chronotask/cron/CronDialect;Ljava/util/BitSet;Ljava/util/BitSet;Ljava/util/BitSet;Ljava/util/BitSet;Ljava/util/BitSet;Ljava/util/BitSet;Ljava/util/BitSet;ZZZZ)V
+	public synthetic fun <init> (Ljava/lang/String;Lio/github/chronotask/cron/CronDialect;Ljava/util/BitSet;Ljava/util/BitSet;Ljava/util/BitSet;Ljava/util/BitSet;Ljava/util/BitSet;Ljava/util/BitSet;Ljava/util/BitSet;ZZZZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()Z
+	public final fun component11 ()Z
+	public final fun component12 ()Z
+	public final fun component13 ()Z
+	public final fun component2 ()Lio/github/chronotask/cron/CronDialect;
+	public final fun component3 ()Ljava/util/BitSet;
+	public final fun component4 ()Ljava/util/BitSet;
+	public final fun component5 ()Ljava/util/BitSet;
+	public final fun component6 ()Ljava/util/BitSet;
+	public final fun component7 ()Ljava/util/BitSet;
+	public final fun component8 ()Ljava/util/BitSet;
+	public final fun component9 ()Ljava/util/BitSet;
+	public final fun copy (Ljava/lang/String;Lio/github/chronotask/cron/CronDialect;Ljava/util/BitSet;Ljava/util/BitSet;Ljava/util/BitSet;Ljava/util/BitSet;Ljava/util/BitSet;Ljava/util/BitSet;Ljava/util/BitSet;ZZZZ)Lio/github/chronotask/cron/CronExpression;
+	public static synthetic fun copy$default (Lio/github/chronotask/cron/CronExpression;Ljava/lang/String;Lio/github/chronotask/cron/CronDialect;Ljava/util/BitSet;Ljava/util/BitSet;Ljava/util/BitSet;Ljava/util/BitSet;Ljava/util/BitSet;Ljava/util/BitSet;Ljava/util/BitSet;ZZZZILjava/lang/Object;)Lio/github/chronotask/cron/CronExpression;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDaysOfMonth ()Ljava/util/BitSet;
+	public final fun getDaysOfWeek ()Ljava/util/BitSet;
+	public final fun getDialect ()Lio/github/chronotask/cron/CronDialect;
+	public final fun getExpression ()Ljava/lang/String;
+	public final fun getHours ()Ljava/util/BitSet;
+	public final fun getMinutes ()Ljava/util/BitSet;
+	public final fun getMonths ()Ljava/util/BitSet;
+	public final fun getSeconds ()Ljava/util/BitSet;
+	public final fun getYears ()Ljava/util/BitSet;
+	public fun hashCode ()I
+	public final fun isDomQuestion ()Z
+	public final fun isDomWildcard ()Z
+	public final fun isDowQuestion ()Z
+	public final fun isDowWildcard ()Z
+	public final fun matches (Ljava/time/ZonedDateTime;)Z
+	public final fun matchesDay (III)Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/cron/CronParseException : io/github/chronotask/exception/ChronoTaskException {
+	public fun <init> (Ljava/lang/String;Lio/github/chronotask/cron/CronDialect;Ljava/lang/String;)V
+	public fun <init> (Ljava/lang/String;Lio/github/chronotask/cron/CronDialect;Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Lio/github/chronotask/cron/CronDialect;Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getDialect ()Lio/github/chronotask/cron/CronDialect;
+	public final fun getExpression ()Ljava/lang/String;
+	public final fun getReason ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/cron/CronParser {
+	public static final field INSTANCE Lio/github/chronotask/cron/CronParser;
+	public static final fun parse (Ljava/lang/String;)Lio/github/chronotask/cron/CronExpression;
+	public static final fun parse (Ljava/lang/String;Lio/github/chronotask/cron/CronDialect;)Lio/github/chronotask/cron/CronExpression;
+	public static synthetic fun parse$default (Ljava/lang/String;Lio/github/chronotask/cron/CronDialect;ILjava/lang/Object;)Lio/github/chronotask/cron/CronExpression;
+}
+
+public final class io/github/chronotask/cron/CronTriggerCalculator : io/github/chronotask/trigger/TriggerCalculator {
+	public fun <init> (Lio/github/chronotask/model/TaskSchedule$Cron;)V
+	public final fun getCron ()Lio/github/chronotask/cron/CronExpression;
+	public final fun getSchedule ()Lio/github/chronotask/model/TaskSchedule$Cron;
+	public final fun getZoneId ()Ljava/time/ZoneId;
+	public fun nextTrigger (Lio/github/chronotask/trigger/TriggerContext;)Ljava/time/Instant;
+}
+
+public abstract interface annotation class io/github/chronotask/dsl/ChronoTaskDsl : java/lang/annotation/Annotation {
+}
+
+public final class io/github/chronotask/dsl/DurationExtensionsKt {
+	public static final fun toScheduleDelayMs (Ljava/time/Duration;Ljava/lang/String;)J
+	public static synthetic fun toScheduleDelayMs$default (Ljava/time/Duration;Ljava/lang/String;ILjava/lang/Object;)J
+	public static final fun toScheduleDelayMs-VtjQ1oo (JLjava/lang/String;)J
+	public static synthetic fun toScheduleDelayMs-VtjQ1oo$default (JLjava/lang/String;ILjava/lang/Object;)J
+	public static final fun toScheduleIntervalMs (Ljava/time/Duration;Ljava/lang/String;)J
+	public static synthetic fun toScheduleIntervalMs$default (Ljava/time/Duration;Ljava/lang/String;ILjava/lang/Object;)J
+	public static final fun toScheduleIntervalMs-VtjQ1oo (JLjava/lang/String;)J
+	public static synthetic fun toScheduleIntervalMs-VtjQ1oo$default (JLjava/lang/String;ILjava/lang/Object;)J
+}
+
+public final class io/github/chronotask/dsl/TaskDsl {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun allowConcurrent ()V
+	public final fun build ()Lio/github/chronotask/model/TaskDefinition;
+	public final fun cron (Ljava/lang/String;Ljava/time/ZoneId;Lio/github/chronotask/cron/CronDialect;)V
+	public static synthetic fun cron$default (Lio/github/chronotask/dsl/TaskDsl;Ljava/lang/String;Ljava/time/ZoneId;Lio/github/chronotask/cron/CronDialect;ILjava/lang/Object;)V
+	public final fun custom (Lio/github/chronotask/trigger/TriggerCalculator;)V
+	public final fun custom (Lkotlin/jvm/functions/Function1;)V
+	public final fun execute (Lio/github/chronotask/job/TaskExecutable;)V
+	public final fun execute (Lkotlin/jvm/functions/Function2;)V
+	public final fun fixedDelay-QTBD994 (JJ)V
+	public static synthetic fun fixedDelay-QTBD994$default (Lio/github/chronotask/dsl/TaskDsl;JJILjava/lang/Object;)V
+	public final fun fixedRate-QTBD994 (JJ)V
+	public static synthetic fun fixedRate-QTBD994$default (Lio/github/chronotask/dsl/TaskDsl;JJILjava/lang/Object;)V
+	public final fun getConcurrency ()Lio/github/chronotask/model/ConcurrencyPolicy;
+	public final fun getDispatcher ()Ljava/lang/String;
+	public final fun getDispatcherKey ()Ljava/lang/String;
+	public final fun getEnabled ()Z
+	public final fun getId ()Ljava/lang/String;
+	public final fun getMisfire ()Lio/github/chronotask/model/MisfirePolicy;
+	public final fun getName ()Ljava/lang/String;
+	public final fun onMisfireCatchUp (I)V
+	public final fun onMisfireFireOnce ()V
+	public final fun onMisfireSkip ()V
+	public final fun once-LRDsOJo (J)V
+	public static synthetic fun once-LRDsOJo$default (Lio/github/chronotask/dsl/TaskDsl;JILjava/lang/Object;)V
+	public final fun queueOne ()V
+	public final fun serial (ILio/github/chronotask/model/QueueOverflowPolicy;)V
+	public static synthetic fun serial$default (Lio/github/chronotask/dsl/TaskDsl;ILio/github/chronotask/model/QueueOverflowPolicy;ILjava/lang/Object;)V
+	public final fun setConcurrency (Lio/github/chronotask/model/ConcurrencyPolicy;)V
+	public final fun setDispatcher (Ljava/lang/String;)V
+	public final fun setDispatcherKey (Ljava/lang/String;)V
+	public final fun setEnabled (Z)V
+	public final fun setMisfire (Lio/github/chronotask/model/MisfirePolicy;)V
+	public final fun setName (Ljava/lang/String;)V
+	public final fun skipIfRunning ()V
+}
+
+public final class io/github/chronotask/dsl/TaskDslKt {
+	public static final fun schedule (Lio/github/chronotask/engine/ChronoTaskEngine;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)Lio/github/chronotask/engine/TaskHandle;
+}
+
+public abstract interface class io/github/chronotask/engine/ChronoTaskEngine : java/lang/AutoCloseable {
+	public static final field Companion Lio/github/chronotask/engine/ChronoTaskEngine$Companion;
+	public fun close ()V
+	public static fun create ()Lio/github/chronotask/engine/ChronoTaskEngine;
+	public static fun create (Lio/github/chronotask/engine/EngineConfig;)Lio/github/chronotask/engine/ChronoTaskEngine;
+	public abstract fun getHandle (Ljava/lang/String;)Lio/github/chronotask/engine/TaskHandle;
+	public abstract fun getState ()Lio/github/chronotask/model/EngineState;
+	public abstract fun pause ()V
+	public abstract fun register (Lio/github/chronotask/model/TaskDefinition;)Lio/github/chronotask/engine/TaskHandle;
+	public abstract fun resume ()V
+	public abstract fun start ()V
+	public abstract fun stop ()V
+	public abstract fun unregister (Ljava/lang/String;)Z
+}
+
+public final class io/github/chronotask/engine/ChronoTaskEngine$Companion {
+	public final fun create ()Lio/github/chronotask/engine/ChronoTaskEngine;
+	public final fun create (Lio/github/chronotask/engine/EngineConfig;)Lio/github/chronotask/engine/ChronoTaskEngine;
+	public static synthetic fun create$default (Lio/github/chronotask/engine/ChronoTaskEngine$Companion;Lio/github/chronotask/engine/EngineConfig;ILjava/lang/Object;)Lio/github/chronotask/engine/ChronoTaskEngine;
+}
+
+public final class io/github/chronotask/engine/DefaultChronoTaskEngine : io/github/chronotask/engine/ChronoTaskEngine {
+	public fun <init> ()V
+	public fun <init> (Lio/github/chronotask/engine/EngineConfig;)V
+	public synthetic fun <init> (Lio/github/chronotask/engine/EngineConfig;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getConfig ()Lio/github/chronotask/engine/EngineConfig;
+	public fun getHandle (Ljava/lang/String;)Lio/github/chronotask/engine/TaskHandle;
+	public fun getState ()Lio/github/chronotask/model/EngineState;
+	public fun pause ()V
+	public fun register (Lio/github/chronotask/model/TaskDefinition;)Lio/github/chronotask/engine/TaskHandle;
+	public fun resume ()V
+	public fun start ()V
+	public fun stop ()V
+	public fun unregister (Ljava/lang/String;)Z
+}
+
+public final class io/github/chronotask/engine/DefaultDispatcherProvider : io/github/chronotask/engine/DispatcherProvider {
+	public fun <init> ()V
+	public fun <init> (Lkotlinx/coroutines/CoroutineDispatcher;)V
+	public fun <init> (Lkotlinx/coroutines/CoroutineDispatcher;Ljava/util/Map;)V
+	public synthetic fun <init> (Lkotlinx/coroutines/CoroutineDispatcher;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun get (Ljava/lang/String;)Lkotlinx/coroutines/CoroutineDispatcher;
+	public final fun getDefaultDispatcher ()Lkotlinx/coroutines/CoroutineDispatcher;
+	public final fun register (Ljava/lang/String;Lkotlinx/coroutines/CoroutineDispatcher;)V
+}
+
+public abstract interface class io/github/chronotask/engine/DispatcherProvider {
+	public abstract fun get (Ljava/lang/String;)Lkotlinx/coroutines/CoroutineDispatcher;
+}
+
+public final class io/github/chronotask/engine/DuplicateTaskException : io/github/chronotask/exception/ChronoTaskException {
+	public fun <init> (Ljava/lang/String;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class io/github/chronotask/engine/EngineConfig {
+	public fun <init> ()V
+	public fun <init> (Lio/github/chronotask/clock/ChronoClock;)V
+	public fun <init> (Lio/github/chronotask/clock/ChronoClock;Lio/github/chronotask/clock/ChronoTimer;)V
+	public fun <init> (Lio/github/chronotask/clock/ChronoClock;Lio/github/chronotask/clock/ChronoTimer;Lio/github/chronotask/engine/DispatcherProvider;)V
+	public fun <init> (Lio/github/chronotask/clock/ChronoClock;Lio/github/chronotask/clock/ChronoTimer;Lio/github/chronotask/engine/DispatcherProvider;Lio/github/chronotask/engine/TaskLifecycleListener;)V
+	public fun <init> (Lio/github/chronotask/clock/ChronoClock;Lio/github/chronotask/clock/ChronoTimer;Lio/github/chronotask/engine/DispatcherProvider;Lio/github/chronotask/engine/TaskLifecycleListener;Lio/github/chronotask/execution/ExecutionListener;)V
+	public fun <init> (Lio/github/chronotask/clock/ChronoClock;Lio/github/chronotask/clock/ChronoTimer;Lio/github/chronotask/engine/DispatcherProvider;Lio/github/chronotask/engine/TaskLifecycleListener;Lio/github/chronotask/execution/ExecutionListener;Lio/github/chronotask/execution/TaskErrorHandler;)V
+	public fun <init> (Lio/github/chronotask/clock/ChronoClock;Lio/github/chronotask/clock/ChronoTimer;Lio/github/chronotask/engine/DispatcherProvider;Lio/github/chronotask/engine/TaskLifecycleListener;Lio/github/chronotask/execution/ExecutionListener;Lio/github/chronotask/execution/TaskErrorHandler;Lio/github/chronotask/execution/TaskRunner;)V
+	public fun <init> (Lio/github/chronotask/clock/ChronoClock;Lio/github/chronotask/clock/ChronoTimer;Lio/github/chronotask/engine/DispatcherProvider;Lio/github/chronotask/engine/TaskLifecycleListener;Lio/github/chronotask/execution/ExecutionListener;Lio/github/chronotask/execution/TaskErrorHandler;Lio/github/chronotask/execution/TaskRunner;Lio/github/chronotask/misfire/MisfireResolver;)V
+	public synthetic fun <init> (Lio/github/chronotask/clock/ChronoClock;Lio/github/chronotask/clock/ChronoTimer;Lio/github/chronotask/engine/DispatcherProvider;Lio/github/chronotask/engine/TaskLifecycleListener;Lio/github/chronotask/execution/ExecutionListener;Lio/github/chronotask/execution/TaskErrorHandler;Lio/github/chronotask/execution/TaskRunner;Lio/github/chronotask/misfire/MisfireResolver;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lio/github/chronotask/clock/ChronoClock;
+	public final fun component2 ()Lio/github/chronotask/clock/ChronoTimer;
+	public final fun component3 ()Lio/github/chronotask/engine/DispatcherProvider;
+	public final fun component4 ()Lio/github/chronotask/engine/TaskLifecycleListener;
+	public final fun component5 ()Lio/github/chronotask/execution/ExecutionListener;
+	public final fun component6 ()Lio/github/chronotask/execution/TaskErrorHandler;
+	public final fun component7 ()Lio/github/chronotask/execution/TaskRunner;
+	public final fun component8 ()Lio/github/chronotask/misfire/MisfireResolver;
+	public final fun copy (Lio/github/chronotask/clock/ChronoClock;Lio/github/chronotask/clock/ChronoTimer;Lio/github/chronotask/engine/DispatcherProvider;Lio/github/chronotask/engine/TaskLifecycleListener;Lio/github/chronotask/execution/ExecutionListener;Lio/github/chronotask/execution/TaskErrorHandler;Lio/github/chronotask/execution/TaskRunner;Lio/github/chronotask/misfire/MisfireResolver;)Lio/github/chronotask/engine/EngineConfig;
+	public static synthetic fun copy$default (Lio/github/chronotask/engine/EngineConfig;Lio/github/chronotask/clock/ChronoClock;Lio/github/chronotask/clock/ChronoTimer;Lio/github/chronotask/engine/DispatcherProvider;Lio/github/chronotask/engine/TaskLifecycleListener;Lio/github/chronotask/execution/ExecutionListener;Lio/github/chronotask/execution/TaskErrorHandler;Lio/github/chronotask/execution/TaskRunner;Lio/github/chronotask/misfire/MisfireResolver;ILjava/lang/Object;)Lio/github/chronotask/engine/EngineConfig;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getClock ()Lio/github/chronotask/clock/ChronoClock;
+	public final fun getDispatcherProvider ()Lio/github/chronotask/engine/DispatcherProvider;
+	public final fun getErrorHandler ()Lio/github/chronotask/execution/TaskErrorHandler;
+	public final fun getExecutionListener ()Lio/github/chronotask/execution/ExecutionListener;
+	public final fun getLifecycleListener ()Lio/github/chronotask/engine/TaskLifecycleListener;
+	public final fun getMisfireResolver ()Lio/github/chronotask/misfire/MisfireResolver;
+	public final fun getRunner ()Lio/github/chronotask/execution/TaskRunner;
+	public final fun getTimer ()Lio/github/chronotask/clock/ChronoTimer;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/engine/EngineStateException : io/github/chronotask/exception/ChronoTaskException {
+	public fun <init> (Ljava/lang/String;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public abstract interface class io/github/chronotask/engine/TaskHandle {
+	public abstract fun cancel ()V
+	public abstract fun getState ()Lio/github/chronotask/model/TaskState;
+	public abstract fun getTaskId ()Ljava/lang/String;
+	public abstract fun pause ()V
+	public abstract fun resume ()V
+	public abstract fun snapshot ()Lio/github/chronotask/engine/TaskRuntimeSnapshot;
+	public abstract fun triggerNow ()Lio/github/chronotask/execution/SubmissionResult;
+	public fun unregister ()Z
+}
+
+public abstract interface class io/github/chronotask/engine/TaskLifecycleListener {
+	public fun onCancelled (Lio/github/chronotask/model/TaskDefinition;)V
+	public fun onPaused (Lio/github/chronotask/model/TaskDefinition;)V
+	public fun onRegistered (Lio/github/chronotask/model/TaskDefinition;)V
+	public fun onResumed (Lio/github/chronotask/model/TaskDefinition;)V
+	public fun onUnregistered (Lio/github/chronotask/model/TaskDefinition;)V
+}
+
+public final class io/github/chronotask/engine/TaskNotFoundException : io/github/chronotask/exception/ChronoTaskException {
+	public fun <init> (Ljava/lang/String;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class io/github/chronotask/engine/TaskRuntimeSnapshot {
+	public fun <init> (Ljava/lang/String;Lio/github/chronotask/model/TaskState;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;IZ)V
+	public fun <init> (Ljava/lang/String;Lio/github/chronotask/model/TaskState;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;IZLjava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Lio/github/chronotask/model/TaskState;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;IZLjava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component10 ()Ljava/lang/Throwable;
+	public final fun component2 ()Lio/github/chronotask/model/TaskState;
+	public final fun component3 ()Ljava/time/Instant;
+	public final fun component4 ()Ljava/time/Instant;
+	public final fun component5 ()Ljava/time/Instant;
+	public final fun component6 ()Ljava/time/Instant;
+	public final fun component7 ()Ljava/time/Instant;
+	public final fun component8 ()I
+	public final fun component9 ()Z
+	public final fun copy (Ljava/lang/String;Lio/github/chronotask/model/TaskState;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;IZLjava/lang/Throwable;)Lio/github/chronotask/engine/TaskRuntimeSnapshot;
+	public static synthetic fun copy$default (Lio/github/chronotask/engine/TaskRuntimeSnapshot;Ljava/lang/String;Lio/github/chronotask/model/TaskState;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;IZLjava/lang/Throwable;ILjava/lang/Object;)Lio/github/chronotask/engine/TaskRuntimeSnapshot;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getActiveExecutions ()I
+	public final fun getLastCompletedAt ()Ljava/time/Instant;
+	public final fun getLastScheduledAt ()Ljava/time/Instant;
+	public final fun getLastStartedAt ()Ljava/time/Instant;
+	public final fun getNextScheduledAt ()Ljava/time/Instant;
+	public final fun getRegisteredAt ()Ljava/time/Instant;
+	public final fun getScheduleCompleted ()Z
+	public final fun getScheduleFailure ()Ljava/lang/Throwable;
+	public final fun getState ()Lio/github/chronotask/model/TaskState;
+	public final fun getTaskId ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public class io/github/chronotask/exception/ChronoTaskException : java/lang/RuntimeException {
+	public fun <init> (Ljava/lang/String;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class io/github/chronotask/exception/TaskConfigurationException : io/github/chronotask/exception/ChronoTaskException {
+	public fun <init> (Ljava/lang/String;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class io/github/chronotask/execution/DefaultTaskRunner : io/github/chronotask/execution/TaskRunner {
+	public static final field INSTANCE Lio/github/chronotask/execution/DefaultTaskRunner;
+	public fun run (Lio/github/chronotask/model/TaskDefinition;Lio/github/chronotask/execution/TaskExecution;Lio/github/chronotask/execution/TaskErrorHandler;Lio/github/chronotask/execution/ExecutionListener;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+
+public final class io/github/chronotask/execution/ExecutionId {
+	public static final field Companion Lio/github/chronotask/execution/ExecutionId$Companion;
+	public fun <init> (Ljava/lang/String;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun copy (Ljava/lang/String;)Lio/github/chronotask/execution/ExecutionId;
+	public static synthetic fun copy$default (Lio/github/chronotask/execution/ExecutionId;Ljava/lang/String;ILjava/lang/Object;)Lio/github/chronotask/execution/ExecutionId;
+	public fun equals (Ljava/lang/Object;)Z
+	public static final fun generate ()Lio/github/chronotask/execution/ExecutionId;
+	public final fun getValue ()Ljava/lang/String;
+	public fun hashCode ()I
+	public static final fun of (Ljava/lang/String;)Lio/github/chronotask/execution/ExecutionId;
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/execution/ExecutionId$Companion {
+	public final fun generate ()Lio/github/chronotask/execution/ExecutionId;
+	public final fun of (Ljava/lang/String;)Lio/github/chronotask/execution/ExecutionId;
+}
+
+public abstract interface class io/github/chronotask/execution/ExecutionListener {
+	public fun onCancelled (Lio/github/chronotask/model/TaskDefinition;Lio/github/chronotask/execution/TaskExecution;)V
+	public fun onFailure (Lio/github/chronotask/model/TaskDefinition;Lio/github/chronotask/execution/TaskExecution;Ljava/lang/Throwable;)V
+	public fun onQueued (Lio/github/chronotask/model/TaskDefinition;Lio/github/chronotask/execution/TaskExecution;)V
+	public fun onSkipped (Lio/github/chronotask/model/TaskDefinition;Lio/github/chronotask/execution/TaskExecution;Lio/github/chronotask/execution/SkipReason;)V
+	public fun onStarted (Lio/github/chronotask/model/TaskDefinition;Lio/github/chronotask/execution/TaskExecution;)V
+	public fun onSuccess (Lio/github/chronotask/model/TaskDefinition;Lio/github/chronotask/execution/TaskExecution;)V
+}
+
+public abstract interface class io/github/chronotask/execution/ExecutionResult {
+	public static final field CANCELLED Lio/github/chronotask/execution/ExecutionResult;
+	public static final field Companion Lio/github/chronotask/execution/ExecutionResult$Companion;
+	public static final field SUCCESS Lio/github/chronotask/execution/ExecutionResult;
+	public static fun failed (Ljava/lang/Throwable;)Lio/github/chronotask/execution/ExecutionResult;
+	public static fun skipped (Lio/github/chronotask/execution/SkipReason;)Lio/github/chronotask/execution/ExecutionResult;
+}
+
+public final class io/github/chronotask/execution/ExecutionResult$Cancelled : io/github/chronotask/execution/ExecutionResult {
+	public static final field INSTANCE Lio/github/chronotask/execution/ExecutionResult$Cancelled;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/execution/ExecutionResult$Companion {
+	public final fun failed (Ljava/lang/Throwable;)Lio/github/chronotask/execution/ExecutionResult;
+	public final fun skipped (Lio/github/chronotask/execution/SkipReason;)Lio/github/chronotask/execution/ExecutionResult;
+}
+
+public final class io/github/chronotask/execution/ExecutionResult$Failed : io/github/chronotask/execution/ExecutionResult {
+	public fun <init> (Ljava/lang/Throwable;)V
+	public final fun component1 ()Ljava/lang/Throwable;
+	public final fun copy (Ljava/lang/Throwable;)Lio/github/chronotask/execution/ExecutionResult$Failed;
+	public static synthetic fun copy$default (Lio/github/chronotask/execution/ExecutionResult$Failed;Ljava/lang/Throwable;ILjava/lang/Object;)Lio/github/chronotask/execution/ExecutionResult$Failed;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getError ()Ljava/lang/Throwable;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/execution/ExecutionResult$Skipped : io/github/chronotask/execution/ExecutionResult {
+	public fun <init> (Lio/github/chronotask/execution/SkipReason;)V
+	public final fun component1 ()Lio/github/chronotask/execution/SkipReason;
+	public final fun copy (Lio/github/chronotask/execution/SkipReason;)Lio/github/chronotask/execution/ExecutionResult$Skipped;
+	public static synthetic fun copy$default (Lio/github/chronotask/execution/ExecutionResult$Skipped;Lio/github/chronotask/execution/SkipReason;ILjava/lang/Object;)Lio/github/chronotask/execution/ExecutionResult$Skipped;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getReason ()Lio/github/chronotask/execution/SkipReason;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/execution/ExecutionResult$Success : io/github/chronotask/execution/ExecutionResult {
+	public static final field INSTANCE Lio/github/chronotask/execution/ExecutionResult$Success;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/execution/RejectionReason : java/lang/Enum {
+	public static final field CONTROLLER_CLOSED Lio/github/chronotask/execution/RejectionReason;
+	public static final field QUEUE_FULL Lio/github/chronotask/execution/RejectionReason;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/chronotask/execution/RejectionReason;
+	public static fun values ()[Lio/github/chronotask/execution/RejectionReason;
+}
+
+public final class io/github/chronotask/execution/SkipReason : java/lang/Enum {
+	public static final field ALREADY_RUNNING Lio/github/chronotask/execution/SkipReason;
+	public static final field QUEUE_FULL Lio/github/chronotask/execution/SkipReason;
+	public static final field QUEUE_REPLACED Lio/github/chronotask/execution/SkipReason;
+	public static final field TASK_CANCELLED Lio/github/chronotask/execution/SkipReason;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/chronotask/execution/SkipReason;
+	public static fun values ()[Lio/github/chronotask/execution/SkipReason;
+}
+
+public abstract interface class io/github/chronotask/execution/SubmissionResult {
+}
+
+public final class io/github/chronotask/execution/SubmissionResult$Queued : io/github/chronotask/execution/SubmissionResult {
+	public fun <init> (Lio/github/chronotask/execution/TaskExecution;)V
+	public final fun component1 ()Lio/github/chronotask/execution/TaskExecution;
+	public final fun copy (Lio/github/chronotask/execution/TaskExecution;)Lio/github/chronotask/execution/SubmissionResult$Queued;
+	public static synthetic fun copy$default (Lio/github/chronotask/execution/SubmissionResult$Queued;Lio/github/chronotask/execution/TaskExecution;ILjava/lang/Object;)Lio/github/chronotask/execution/SubmissionResult$Queued;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getExecution ()Lio/github/chronotask/execution/TaskExecution;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/execution/SubmissionResult$Rejected : io/github/chronotask/execution/SubmissionResult {
+	public fun <init> (Lio/github/chronotask/execution/TaskExecution;Lio/github/chronotask/execution/RejectionReason;)V
+	public final fun component1 ()Lio/github/chronotask/execution/TaskExecution;
+	public final fun component2 ()Lio/github/chronotask/execution/RejectionReason;
+	public final fun copy (Lio/github/chronotask/execution/TaskExecution;Lio/github/chronotask/execution/RejectionReason;)Lio/github/chronotask/execution/SubmissionResult$Rejected;
+	public static synthetic fun copy$default (Lio/github/chronotask/execution/SubmissionResult$Rejected;Lio/github/chronotask/execution/TaskExecution;Lio/github/chronotask/execution/RejectionReason;ILjava/lang/Object;)Lio/github/chronotask/execution/SubmissionResult$Rejected;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getExecution ()Lio/github/chronotask/execution/TaskExecution;
+	public final fun getReason ()Lio/github/chronotask/execution/RejectionReason;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/execution/SubmissionResult$Skipped : io/github/chronotask/execution/SubmissionResult {
+	public fun <init> (Lio/github/chronotask/execution/TaskExecution;Lio/github/chronotask/execution/SkipReason;)V
+	public final fun component1 ()Lio/github/chronotask/execution/TaskExecution;
+	public final fun component2 ()Lio/github/chronotask/execution/SkipReason;
+	public final fun copy (Lio/github/chronotask/execution/TaskExecution;Lio/github/chronotask/execution/SkipReason;)Lio/github/chronotask/execution/SubmissionResult$Skipped;
+	public static synthetic fun copy$default (Lio/github/chronotask/execution/SubmissionResult$Skipped;Lio/github/chronotask/execution/TaskExecution;Lio/github/chronotask/execution/SkipReason;ILjava/lang/Object;)Lio/github/chronotask/execution/SubmissionResult$Skipped;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getExecution ()Lio/github/chronotask/execution/TaskExecution;
+	public final fun getReason ()Lio/github/chronotask/execution/SkipReason;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/execution/SubmissionResult$Started : io/github/chronotask/execution/SubmissionResult {
+	public fun <init> (Lio/github/chronotask/execution/TaskExecution;)V
+	public final fun component1 ()Lio/github/chronotask/execution/TaskExecution;
+	public final fun copy (Lio/github/chronotask/execution/TaskExecution;)Lio/github/chronotask/execution/SubmissionResult$Started;
+	public static synthetic fun copy$default (Lio/github/chronotask/execution/SubmissionResult$Started;Lio/github/chronotask/execution/TaskExecution;ILjava/lang/Object;)Lio/github/chronotask/execution/SubmissionResult$Started;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getExecution ()Lio/github/chronotask/execution/TaskExecution;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class io/github/chronotask/execution/TaskErrorHandler {
+	public abstract fun onError (Lio/github/chronotask/model/TaskDefinition;Lio/github/chronotask/execution/TaskExecution;Ljava/lang/Exception;)V
+}
+
+public final class io/github/chronotask/execution/TaskExecution {
+	public fun <init> (Lio/github/chronotask/execution/ExecutionId;Ljava/lang/String;Lio/github/chronotask/trigger/ScheduledTrigger;)V
+	public fun <init> (Lio/github/chronotask/execution/ExecutionId;Ljava/lang/String;Lio/github/chronotask/trigger/ScheduledTrigger;I)V
+	public synthetic fun <init> (Lio/github/chronotask/execution/ExecutionId;Ljava/lang/String;Lio/github/chronotask/trigger/ScheduledTrigger;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Ljava/lang/String;Lio/github/chronotask/trigger/ScheduledTrigger;)V
+	public final fun component1 ()Lio/github/chronotask/execution/ExecutionId;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lio/github/chronotask/trigger/ScheduledTrigger;
+	public final fun component4 ()I
+	public final fun copy (Lio/github/chronotask/execution/ExecutionId;Ljava/lang/String;Lio/github/chronotask/trigger/ScheduledTrigger;I)Lio/github/chronotask/execution/TaskExecution;
+	public static synthetic fun copy$default (Lio/github/chronotask/execution/TaskExecution;Lio/github/chronotask/execution/ExecutionId;Ljava/lang/String;Lio/github/chronotask/trigger/ScheduledTrigger;IILjava/lang/Object;)Lio/github/chronotask/execution/TaskExecution;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAttempt ()I
+	public final fun getExecutionId ()Lio/github/chronotask/execution/ExecutionId;
+	public final fun getTaskId ()Ljava/lang/String;
+	public final fun getTrigger ()Lio/github/chronotask/trigger/ScheduledTrigger;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class io/github/chronotask/execution/TaskRunner {
+	public abstract fun run (Lio/github/chronotask/model/TaskDefinition;Lio/github/chronotask/execution/TaskExecution;Lio/github/chronotask/execution/TaskErrorHandler;Lio/github/chronotask/execution/ExecutionListener;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static synthetic fun run$default (Lio/github/chronotask/execution/TaskRunner;Lio/github/chronotask/model/TaskDefinition;Lio/github/chronotask/execution/TaskExecution;Lio/github/chronotask/execution/TaskErrorHandler;Lio/github/chronotask/execution/ExecutionListener;Lkotlin/coroutines/Continuation;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public abstract class io/github/chronotask/job/ChronoJob : io/github/chronotask/job/JobDefinitionProvider {
+	public fun <init> ()V
+	public abstract fun execute (Lio/github/chronotask/job/TaskExecutionContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun getConcurrencyPolicy ()Lio/github/chronotask/model/ConcurrencyPolicy;
+	public fun getDispatcherKey ()Ljava/lang/String;
+	public abstract fun getId ()Ljava/lang/String;
+	public fun getMisfirePolicy ()Lio/github/chronotask/model/MisfirePolicy;
+	public fun getName ()Ljava/lang/String;
+	public abstract fun getSchedule ()Lio/github/chronotask/model/TaskSchedule;
+	public fun isEnabled ()Z
+	public fun toTaskDefinition ()Lio/github/chronotask/model/TaskDefinition;
+}
+
+public final class io/github/chronotask/job/ChronoJobKt {
+	public static final fun register (Lio/github/chronotask/engine/ChronoTaskEngine;Lio/github/chronotask/job/ChronoJob;)Lio/github/chronotask/engine/TaskHandle;
+}
+
+public abstract interface class io/github/chronotask/job/JavaTaskExecutable {
+	public abstract fun execute (Lio/github/chronotask/job/TaskExecutionContext;)V
+}
+
+public abstract interface class io/github/chronotask/job/JobDefinitionProvider {
+	public abstract fun toTaskDefinition ()Lio/github/chronotask/model/TaskDefinition;
+}
+
+public abstract class io/github/chronotask/job/ManagedCronJob : io/github/chronotask/job/ChronoJob {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/time/ZoneId;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/time/ZoneId;Lio/github/chronotask/cron/CronDialect;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/time/ZoneId;Lio/github/chronotask/cron/CronDialect;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun getCron ()Ljava/lang/String;
+	public final fun getDialect ()Lio/github/chronotask/cron/CronDialect;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getSchedule ()Lio/github/chronotask/model/TaskSchedule;
+	public final fun getZoneId ()Ljava/time/ZoneId;
+}
+
+public abstract interface class io/github/chronotask/job/TaskExecutable {
+	public static final field Companion Lio/github/chronotask/job/TaskExecutable$Companion;
+	public abstract fun execute (Lio/github/chronotask/job/TaskExecutionContext;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public static fun fromJava (Lio/github/chronotask/job/JavaTaskExecutable;)Lio/github/chronotask/job/TaskExecutable;
+	public static fun fromRunnable (Ljava/lang/Runnable;)Lio/github/chronotask/job/TaskExecutable;
+}
+
+public final class io/github/chronotask/job/TaskExecutable$Companion {
+	public final fun fromJava (Lio/github/chronotask/job/JavaTaskExecutable;)Lio/github/chronotask/job/TaskExecutable;
+	public final fun fromRunnable (Ljava/lang/Runnable;)Lio/github/chronotask/job/TaskExecutable;
+}
+
+public final class io/github/chronotask/job/TaskExecutionContext {
+	public fun <init> (Ljava/lang/String;Lio/github/chronotask/trigger/ScheduledTrigger;)V
+	public fun <init> (Ljava/lang/String;Lio/github/chronotask/trigger/ScheduledTrigger;I)V
+	public synthetic fun <init> (Ljava/lang/String;Lio/github/chronotask/trigger/ScheduledTrigger;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Lio/github/chronotask/trigger/ScheduledTrigger;
+	public final fun component3 ()I
+	public final fun copy (Ljava/lang/String;Lio/github/chronotask/trigger/ScheduledTrigger;I)Lio/github/chronotask/job/TaskExecutionContext;
+	public static synthetic fun copy$default (Lio/github/chronotask/job/TaskExecutionContext;Ljava/lang/String;Lio/github/chronotask/trigger/ScheduledTrigger;IILjava/lang/Object;)Lio/github/chronotask/job/TaskExecutionContext;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAttempt ()I
+	public final fun getTaskId ()Ljava/lang/String;
+	public final fun getTrigger ()Lio/github/chronotask/trigger/ScheduledTrigger;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/misfire/DefaultMisfireResolver : io/github/chronotask/misfire/MisfireResolver {
+	public static final field INSTANCE Lio/github/chronotask/misfire/DefaultMisfireResolver;
+	public static final field MAX_TRIGGER_SCAN_ITERATIONS I
+	public fun resolve (Lio/github/chronotask/misfire/MisfireContext;)Lio/github/chronotask/misfire/MisfireResult;
+}
+
+public final class io/github/chronotask/misfire/MisfireContext {
+	public fun <init> (Lio/github/chronotask/model/TaskSchedule;Lio/github/chronotask/model/MisfirePolicy;Lio/github/chronotask/trigger/TriggerContext;Ljava/time/Instant;)V
+	public fun <init> (Lio/github/chronotask/model/TaskSchedule;Lio/github/chronotask/model/MisfirePolicy;Lio/github/chronotask/trigger/TriggerContext;Ljava/time/Instant;Ljava/time/Instant;)V
+	public synthetic fun <init> (Lio/github/chronotask/model/TaskSchedule;Lio/github/chronotask/model/MisfirePolicy;Lio/github/chronotask/trigger/TriggerContext;Ljava/time/Instant;Ljava/time/Instant;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Lio/github/chronotask/model/TaskSchedule;
+	public final fun component2 ()Lio/github/chronotask/model/MisfirePolicy;
+	public final fun component3 ()Lio/github/chronotask/trigger/TriggerContext;
+	public final fun component4 ()Ljava/time/Instant;
+	public final fun component5 ()Ljava/time/Instant;
+	public final fun copy (Lio/github/chronotask/model/TaskSchedule;Lio/github/chronotask/model/MisfirePolicy;Lio/github/chronotask/trigger/TriggerContext;Ljava/time/Instant;Ljava/time/Instant;)Lio/github/chronotask/misfire/MisfireContext;
+	public static synthetic fun copy$default (Lio/github/chronotask/misfire/MisfireContext;Lio/github/chronotask/model/TaskSchedule;Lio/github/chronotask/model/MisfirePolicy;Lio/github/chronotask/trigger/TriggerContext;Ljava/time/Instant;Ljava/time/Instant;ILjava/lang/Object;)Lio/github/chronotask/misfire/MisfireContext;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFirstScheduledAt ()Ljava/time/Instant;
+	public final fun getMisfirePolicy ()Lio/github/chronotask/model/MisfirePolicy;
+	public final fun getNow ()Ljava/time/Instant;
+	public final fun getSchedule ()Lio/github/chronotask/model/TaskSchedule;
+	public final fun getTriggerContext ()Lio/github/chronotask/trigger/TriggerContext;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class io/github/chronotask/misfire/MisfireResolver {
+	public abstract fun resolve (Lio/github/chronotask/misfire/MisfireContext;)Lio/github/chronotask/misfire/MisfireResult;
+}
+
+public final class io/github/chronotask/misfire/MisfireResult {
+	public fun <init> (Ljava/util/List;Ljava/time/Instant;)V
+	public fun <init> (Ljava/util/List;Ljava/time/Instant;Ljava/time/Instant;)V
+	public synthetic fun <init> (Ljava/util/List;Ljava/time/Instant;Ljava/time/Instant;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/time/Instant;
+	public final fun component3 ()Ljava/time/Instant;
+	public final fun copy (Ljava/util/List;Ljava/time/Instant;Ljava/time/Instant;)Lio/github/chronotask/misfire/MisfireResult;
+	public static synthetic fun copy$default (Lio/github/chronotask/misfire/MisfireResult;Ljava/util/List;Ljava/time/Instant;Ljava/time/Instant;ILjava/lang/Object;)Lio/github/chronotask/misfire/MisfireResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAlignedLastScheduledAt ()Ljava/time/Instant;
+	public final fun getNextScheduledAt ()Ljava/time/Instant;
+	public final fun getTriggers ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class io/github/chronotask/model/ConcurrencyPolicy {
+	public static final field ALLOW Lio/github/chronotask/model/ConcurrencyPolicy;
+	public static final field Companion Lio/github/chronotask/model/ConcurrencyPolicy$Companion;
+	public static final field QUEUE_ONE Lio/github/chronotask/model/ConcurrencyPolicy;
+	public static final field SERIAL Lio/github/chronotask/model/ConcurrencyPolicy;
+	public static final field SKIP_IF_RUNNING Lio/github/chronotask/model/ConcurrencyPolicy;
+	public static fun serial ()Lio/github/chronotask/model/ConcurrencyPolicy$Serial;
+	public static fun serial (I)Lio/github/chronotask/model/ConcurrencyPolicy$Serial;
+	public static fun serial (ILio/github/chronotask/model/QueueOverflowPolicy;)Lio/github/chronotask/model/ConcurrencyPolicy$Serial;
+}
+
+public final class io/github/chronotask/model/ConcurrencyPolicy$Allow : io/github/chronotask/model/ConcurrencyPolicy {
+	public static final field INSTANCE Lio/github/chronotask/model/ConcurrencyPolicy$Allow;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/model/ConcurrencyPolicy$Companion {
+	public final fun serial ()Lio/github/chronotask/model/ConcurrencyPolicy$Serial;
+	public final fun serial (I)Lio/github/chronotask/model/ConcurrencyPolicy$Serial;
+	public final fun serial (ILio/github/chronotask/model/QueueOverflowPolicy;)Lio/github/chronotask/model/ConcurrencyPolicy$Serial;
+	public static synthetic fun serial$default (Lio/github/chronotask/model/ConcurrencyPolicy$Companion;ILio/github/chronotask/model/QueueOverflowPolicy;ILjava/lang/Object;)Lio/github/chronotask/model/ConcurrencyPolicy$Serial;
+}
+
+public final class io/github/chronotask/model/ConcurrencyPolicy$QueueOne : io/github/chronotask/model/ConcurrencyPolicy {
+	public static final field INSTANCE Lio/github/chronotask/model/ConcurrencyPolicy$QueueOne;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/model/ConcurrencyPolicy$Serial : io/github/chronotask/model/ConcurrencyPolicy {
+	public fun <init> ()V
+	public fun <init> (I)V
+	public fun <init> (ILio/github/chronotask/model/QueueOverflowPolicy;)V
+	public synthetic fun <init> (ILio/github/chronotask/model/QueueOverflowPolicy;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()I
+	public final fun component2 ()Lio/github/chronotask/model/QueueOverflowPolicy;
+	public final fun copy (ILio/github/chronotask/model/QueueOverflowPolicy;)Lio/github/chronotask/model/ConcurrencyPolicy$Serial;
+	public static synthetic fun copy$default (Lio/github/chronotask/model/ConcurrencyPolicy$Serial;ILio/github/chronotask/model/QueueOverflowPolicy;ILjava/lang/Object;)Lio/github/chronotask/model/ConcurrencyPolicy$Serial;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMaxQueueSize ()I
+	public final fun getOverflowPolicy ()Lio/github/chronotask/model/QueueOverflowPolicy;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/model/ConcurrencyPolicy$SkipIfRunning : io/github/chronotask/model/ConcurrencyPolicy {
+	public static final field INSTANCE Lio/github/chronotask/model/ConcurrencyPolicy$SkipIfRunning;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/model/EngineState : java/lang/Enum {
+	public static final field CREATED Lio/github/chronotask/model/EngineState;
+	public static final field PAUSED Lio/github/chronotask/model/EngineState;
+	public static final field RUNNING Lio/github/chronotask/model/EngineState;
+	public static final field STOPPED Lio/github/chronotask/model/EngineState;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/chronotask/model/EngineState;
+	public static fun values ()[Lio/github/chronotask/model/EngineState;
+}
+
+public final class io/github/chronotask/model/ExecutionStatus : java/lang/Enum {
+	public static final field CANCELLED Lio/github/chronotask/model/ExecutionStatus;
+	public static final field FAILED Lio/github/chronotask/model/ExecutionStatus;
+	public static final field QUEUED Lio/github/chronotask/model/ExecutionStatus;
+	public static final field RUNNING Lio/github/chronotask/model/ExecutionStatus;
+	public static final field SKIPPED Lio/github/chronotask/model/ExecutionStatus;
+	public static final field SUCCESS Lio/github/chronotask/model/ExecutionStatus;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/chronotask/model/ExecutionStatus;
+	public static fun values ()[Lio/github/chronotask/model/ExecutionStatus;
+}
+
+public abstract interface class io/github/chronotask/model/MisfirePolicy {
+	public static final field CATCH_UP Lio/github/chronotask/model/MisfirePolicy;
+	public static final field Companion Lio/github/chronotask/model/MisfirePolicy$Companion;
+	public static final field FIRE_ONCE Lio/github/chronotask/model/MisfirePolicy;
+	public static final field SKIP Lio/github/chronotask/model/MisfirePolicy;
+	public static fun catchUp ()Lio/github/chronotask/model/MisfirePolicy$CatchUp;
+	public static fun catchUp (I)Lio/github/chronotask/model/MisfirePolicy$CatchUp;
+}
+
+public final class io/github/chronotask/model/MisfirePolicy$CatchUp : io/github/chronotask/model/MisfirePolicy {
+	public fun <init> ()V
+	public fun <init> (I)V
+	public synthetic fun <init> (IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()I
+	public final fun copy (I)Lio/github/chronotask/model/MisfirePolicy$CatchUp;
+	public static synthetic fun copy$default (Lio/github/chronotask/model/MisfirePolicy$CatchUp;IILjava/lang/Object;)Lio/github/chronotask/model/MisfirePolicy$CatchUp;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getMaxExecutions ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/model/MisfirePolicy$Companion {
+	public final fun catchUp ()Lio/github/chronotask/model/MisfirePolicy$CatchUp;
+	public final fun catchUp (I)Lio/github/chronotask/model/MisfirePolicy$CatchUp;
+	public static synthetic fun catchUp$default (Lio/github/chronotask/model/MisfirePolicy$Companion;IILjava/lang/Object;)Lio/github/chronotask/model/MisfirePolicy$CatchUp;
+}
+
+public final class io/github/chronotask/model/MisfirePolicy$FireOnce : io/github/chronotask/model/MisfirePolicy {
+	public static final field INSTANCE Lio/github/chronotask/model/MisfirePolicy$FireOnce;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/model/MisfirePolicy$Skip : io/github/chronotask/model/MisfirePolicy {
+	public static final field INSTANCE Lio/github/chronotask/model/MisfirePolicy$Skip;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/model/QueueOverflowPolicy : java/lang/Enum {
+	public static final field DROP_LATEST Lio/github/chronotask/model/QueueOverflowPolicy;
+	public static final field DROP_OLDEST Lio/github/chronotask/model/QueueOverflowPolicy;
+	public static final field REJECT Lio/github/chronotask/model/QueueOverflowPolicy;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/chronotask/model/QueueOverflowPolicy;
+	public static fun values ()[Lio/github/chronotask/model/QueueOverflowPolicy;
+}
+
+public final class io/github/chronotask/model/TaskDefinition {
+	public fun <init> (Ljava/lang/String;Lio/github/chronotask/model/TaskSchedule;Lio/github/chronotask/job/TaskExecutable;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lio/github/chronotask/model/TaskSchedule;Lio/github/chronotask/job/TaskExecutable;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lio/github/chronotask/model/TaskSchedule;Lio/github/chronotask/model/ConcurrencyPolicy;Lio/github/chronotask/job/TaskExecutable;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lio/github/chronotask/model/TaskSchedule;Lio/github/chronotask/model/ConcurrencyPolicy;Lio/github/chronotask/model/MisfirePolicy;Lio/github/chronotask/job/TaskExecutable;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lio/github/chronotask/model/TaskSchedule;Lio/github/chronotask/model/ConcurrencyPolicy;Lio/github/chronotask/model/MisfirePolicy;Ljava/lang/String;Lio/github/chronotask/job/TaskExecutable;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Lio/github/chronotask/model/TaskSchedule;Lio/github/chronotask/model/ConcurrencyPolicy;Lio/github/chronotask/model/MisfirePolicy;Ljava/lang/String;ZLio/github/chronotask/job/TaskExecutable;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;Lio/github/chronotask/model/TaskSchedule;Lio/github/chronotask/model/ConcurrencyPolicy;Lio/github/chronotask/model/MisfirePolicy;Ljava/lang/String;ZLio/github/chronotask/job/TaskExecutable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Lio/github/chronotask/model/TaskSchedule;
+	public final fun component4 ()Lio/github/chronotask/model/ConcurrencyPolicy;
+	public final fun component5 ()Lio/github/chronotask/model/MisfirePolicy;
+	public final fun component6 ()Ljava/lang/String;
+	public final fun component7 ()Z
+	public final fun component8 ()Lio/github/chronotask/job/TaskExecutable;
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Lio/github/chronotask/model/TaskSchedule;Lio/github/chronotask/model/ConcurrencyPolicy;Lio/github/chronotask/model/MisfirePolicy;Ljava/lang/String;ZLio/github/chronotask/job/TaskExecutable;)Lio/github/chronotask/model/TaskDefinition;
+	public static synthetic fun copy$default (Lio/github/chronotask/model/TaskDefinition;Ljava/lang/String;Ljava/lang/String;Lio/github/chronotask/model/TaskSchedule;Lio/github/chronotask/model/ConcurrencyPolicy;Lio/github/chronotask/model/MisfirePolicy;Ljava/lang/String;ZLio/github/chronotask/job/TaskExecutable;ILjava/lang/Object;)Lio/github/chronotask/model/TaskDefinition;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getConcurrencyPolicy ()Lio/github/chronotask/model/ConcurrencyPolicy;
+	public final fun getDispatcherKey ()Ljava/lang/String;
+	public final fun getExecutable ()Lio/github/chronotask/job/TaskExecutable;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getMisfirePolicy ()Lio/github/chronotask/model/MisfirePolicy;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getSchedule ()Lio/github/chronotask/model/TaskSchedule;
+	public fun hashCode ()I
+	public final fun isEnabled ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class io/github/chronotask/model/TaskSchedule {
+}
+
+public final class io/github/chronotask/model/TaskSchedule$Cron : io/github/chronotask/model/TaskSchedule {
+	public fun <init> (Ljava/lang/String;Ljava/time/ZoneId;)V
+	public fun <init> (Ljava/lang/String;Ljava/time/ZoneId;Lio/github/chronotask/cron/CronDialect;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/time/ZoneId;Lio/github/chronotask/cron/CronDialect;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/time/ZoneId;
+	public final fun component3 ()Lio/github/chronotask/cron/CronDialect;
+	public final fun copy (Ljava/lang/String;Ljava/time/ZoneId;Lio/github/chronotask/cron/CronDialect;)Lio/github/chronotask/model/TaskSchedule$Cron;
+	public static synthetic fun copy$default (Lio/github/chronotask/model/TaskSchedule$Cron;Ljava/lang/String;Ljava/time/ZoneId;Lio/github/chronotask/cron/CronDialect;ILjava/lang/Object;)Lio/github/chronotask/model/TaskSchedule$Cron;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDialect ()Lio/github/chronotask/cron/CronDialect;
+	public final fun getExpression ()Ljava/lang/String;
+	public final fun getZoneId ()Ljava/time/ZoneId;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/model/TaskSchedule$Custom : io/github/chronotask/model/TaskSchedule {
+	public fun <init> (Lio/github/chronotask/trigger/TriggerCalculator;)V
+	public final fun component1 ()Lio/github/chronotask/trigger/TriggerCalculator;
+	public final fun copy (Lio/github/chronotask/trigger/TriggerCalculator;)Lio/github/chronotask/model/TaskSchedule$Custom;
+	public static synthetic fun copy$default (Lio/github/chronotask/model/TaskSchedule$Custom;Lio/github/chronotask/trigger/TriggerCalculator;ILjava/lang/Object;)Lio/github/chronotask/model/TaskSchedule$Custom;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getCalculator ()Lio/github/chronotask/trigger/TriggerCalculator;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/model/TaskSchedule$FixedDelay : io/github/chronotask/model/TaskSchedule {
+	public fun <init> (J)V
+	public fun <init> (JJ)V
+	public synthetic fun <init> (JJILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (JLjava/util/concurrent/TimeUnit;)V
+	public fun <init> (JLjava/util/concurrent/TimeUnit;J)V
+	public fun <init> (JLjava/util/concurrent/TimeUnit;JLjava/util/concurrent/TimeUnit;)V
+	public synthetic fun <init> (JLjava/util/concurrent/TimeUnit;JLjava/util/concurrent/TimeUnit;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()J
+	public final fun component2 ()J
+	public final fun copy (JJ)Lio/github/chronotask/model/TaskSchedule$FixedDelay;
+	public static synthetic fun copy$default (Lio/github/chronotask/model/TaskSchedule$FixedDelay;JJILjava/lang/Object;)Lio/github/chronotask/model/TaskSchedule$FixedDelay;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDelayMs ()J
+	public final fun getInitialDelayMs ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/model/TaskSchedule$FixedRate : io/github/chronotask/model/TaskSchedule {
+	public fun <init> (J)V
+	public fun <init> (JJ)V
+	public synthetic fun <init> (JJILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (JLjava/util/concurrent/TimeUnit;)V
+	public fun <init> (JLjava/util/concurrent/TimeUnit;J)V
+	public fun <init> (JLjava/util/concurrent/TimeUnit;JLjava/util/concurrent/TimeUnit;)V
+	public synthetic fun <init> (JLjava/util/concurrent/TimeUnit;JLjava/util/concurrent/TimeUnit;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()J
+	public final fun component2 ()J
+	public final fun copy (JJ)Lio/github/chronotask/model/TaskSchedule$FixedRate;
+	public static synthetic fun copy$default (Lio/github/chronotask/model/TaskSchedule$FixedRate;JJILjava/lang/Object;)Lio/github/chronotask/model/TaskSchedule$FixedRate;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getInitialDelayMs ()J
+	public final fun getIntervalMs ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/model/TaskSchedule$Once : io/github/chronotask/model/TaskSchedule {
+	public fun <init> ()V
+	public fun <init> (J)V
+	public synthetic fun <init> (JILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (JLjava/util/concurrent/TimeUnit;)V
+	public final fun component1 ()J
+	public final fun copy (J)Lio/github/chronotask/model/TaskSchedule$Once;
+	public static synthetic fun copy$default (Lio/github/chronotask/model/TaskSchedule$Once;JILjava/lang/Object;)Lio/github/chronotask/model/TaskSchedule$Once;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDelayMs ()J
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/model/TaskState : java/lang/Enum {
+	public static final field CANCELLED Lio/github/chronotask/model/TaskState;
+	public static final field PAUSED Lio/github/chronotask/model/TaskState;
+	public static final field REGISTERED Lio/github/chronotask/model/TaskState;
+	public static final field RUNNING Lio/github/chronotask/model/TaskState;
+	public static final field SCHEDULED Lio/github/chronotask/model/TaskState;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/chronotask/model/TaskState;
+	public static fun values ()[Lio/github/chronotask/model/TaskState;
+}
+
+public final class io/github/chronotask/trigger/CustomTriggerCalculator : io/github/chronotask/trigger/TriggerCalculator {
+	public fun <init> (Lio/github/chronotask/model/TaskSchedule$Custom;)V
+	public final fun getSchedule ()Lio/github/chronotask/model/TaskSchedule$Custom;
+	public fun nextTrigger (Lio/github/chronotask/trigger/TriggerContext;)Ljava/time/Instant;
+}
+
+public final class io/github/chronotask/trigger/FixedDelayTriggerCalculator : io/github/chronotask/trigger/TriggerCalculator {
+	public fun <init> (Lio/github/chronotask/model/TaskSchedule$FixedDelay;)V
+	public final fun getSchedule ()Lio/github/chronotask/model/TaskSchedule$FixedDelay;
+	public fun nextTrigger (Lio/github/chronotask/trigger/TriggerContext;)Ljava/time/Instant;
+}
+
+public final class io/github/chronotask/trigger/FixedRateTriggerCalculator : io/github/chronotask/trigger/TriggerCalculator {
+	public fun <init> (Lio/github/chronotask/model/TaskSchedule$FixedRate;)V
+	public final fun getSchedule ()Lio/github/chronotask/model/TaskSchedule$FixedRate;
+	public fun nextTrigger (Lio/github/chronotask/trigger/TriggerContext;)Ljava/time/Instant;
+}
+
+public final class io/github/chronotask/trigger/OnceTriggerCalculator : io/github/chronotask/trigger/TriggerCalculator {
+	public fun <init> (Lio/github/chronotask/model/TaskSchedule$Once;)V
+	public final fun getSchedule ()Lio/github/chronotask/model/TaskSchedule$Once;
+	public fun nextTrigger (Lio/github/chronotask/trigger/TriggerContext;)Ljava/time/Instant;
+}
+
+public final class io/github/chronotask/trigger/ScheduledTrigger {
+	public fun <init> (Ljava/time/Instant;Ljava/time/Instant;)V
+	public fun <init> (Ljava/time/Instant;Ljava/time/Instant;Lio/github/chronotask/trigger/TriggerSource;)V
+	public synthetic fun <init> (Ljava/time/Instant;Ljava/time/Instant;Lio/github/chronotask/trigger/TriggerSource;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/time/Instant;
+	public final fun component2 ()Ljava/time/Instant;
+	public final fun component3 ()Lio/github/chronotask/trigger/TriggerSource;
+	public final fun copy (Ljava/time/Instant;Ljava/time/Instant;Lio/github/chronotask/trigger/TriggerSource;)Lio/github/chronotask/trigger/ScheduledTrigger;
+	public static synthetic fun copy$default (Lio/github/chronotask/trigger/ScheduledTrigger;Ljava/time/Instant;Ljava/time/Instant;Lio/github/chronotask/trigger/TriggerSource;ILjava/lang/Object;)Lio/github/chronotask/trigger/ScheduledTrigger;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDiscoveredAt ()Ljava/time/Instant;
+	public final fun getScheduledAt ()Ljava/time/Instant;
+	public final fun getSource ()Lio/github/chronotask/trigger/TriggerSource;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/trigger/TriggerCalculationException : io/github/chronotask/exception/ChronoTaskException {
+	public fun <init> (Ljava/lang/String;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public abstract interface class io/github/chronotask/trigger/TriggerCalculator {
+	public abstract fun nextTrigger (Lio/github/chronotask/trigger/TriggerContext;)Ljava/time/Instant;
+}
+
+public final class io/github/chronotask/trigger/TriggerCalculatorFactory {
+	public static final field INSTANCE Lio/github/chronotask/trigger/TriggerCalculatorFactory;
+	public static final fun create (Lio/github/chronotask/model/TaskSchedule;)Lio/github/chronotask/trigger/TriggerCalculator;
+}
+
+public final class io/github/chronotask/trigger/TriggerContext {
+	public fun <init> (Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;)V
+	public final fun component1 ()Ljava/time/Instant;
+	public final fun component2 ()Ljava/time/Instant;
+	public final fun component3 ()Ljava/time/Instant;
+	public final fun component4 ()Ljava/time/Instant;
+	public final fun component5 ()Ljava/time/Instant;
+	public final fun copy (Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;)Lio/github/chronotask/trigger/TriggerContext;
+	public static synthetic fun copy$default (Lio/github/chronotask/trigger/TriggerContext;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;ILjava/lang/Object;)Lio/github/chronotask/trigger/TriggerContext;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getLastCompletedAt ()Ljava/time/Instant;
+	public final fun getLastScheduledAt ()Ljava/time/Instant;
+	public final fun getLastStartedAt ()Ljava/time/Instant;
+	public final fun getNow ()Ljava/time/Instant;
+	public final fun getRegisteredAt ()Ljava/time/Instant;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/chronotask/trigger/TriggerService {
+	public fun <init> ()V
+	public fun <init> (Lio/github/chronotask/clock/ChronoClock;)V
+	public fun <init> (Lio/github/chronotask/clock/ChronoClock;Lio/github/chronotask/misfire/MisfireResolver;)V
+	public synthetic fun <init> (Lio/github/chronotask/clock/ChronoClock;Lio/github/chronotask/misfire/MisfireResolver;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun computeNextScheduledAt (Lio/github/chronotask/model/TaskSchedule;Lio/github/chronotask/trigger/TriggerContext;)Ljava/time/Instant;
+	public final fun evaluate (Lio/github/chronotask/model/TaskDefinition;Ljava/time/Instant;)Lio/github/chronotask/misfire/MisfireResult;
+	public final fun evaluate (Lio/github/chronotask/model/TaskDefinition;Ljava/time/Instant;Ljava/time/Instant;)Lio/github/chronotask/misfire/MisfireResult;
+	public final fun evaluate (Lio/github/chronotask/model/TaskDefinition;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;)Lio/github/chronotask/misfire/MisfireResult;
+	public final fun evaluate (Lio/github/chronotask/model/TaskDefinition;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;)Lio/github/chronotask/misfire/MisfireResult;
+	public final fun evaluate (Lio/github/chronotask/model/TaskDefinition;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;)Lio/github/chronotask/misfire/MisfireResult;
+	public final fun evaluate (Lio/github/chronotask/model/TaskSchedule;Lio/github/chronotask/model/MisfirePolicy;Ljava/time/Instant;)Lio/github/chronotask/misfire/MisfireResult;
+	public final fun evaluate (Lio/github/chronotask/model/TaskSchedule;Lio/github/chronotask/model/MisfirePolicy;Ljava/time/Instant;Ljava/time/Instant;)Lio/github/chronotask/misfire/MisfireResult;
+	public final fun evaluate (Lio/github/chronotask/model/TaskSchedule;Lio/github/chronotask/model/MisfirePolicy;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;)Lio/github/chronotask/misfire/MisfireResult;
+	public final fun evaluate (Lio/github/chronotask/model/TaskSchedule;Lio/github/chronotask/model/MisfirePolicy;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;)Lio/github/chronotask/misfire/MisfireResult;
+	public final fun evaluate (Lio/github/chronotask/model/TaskSchedule;Lio/github/chronotask/model/MisfirePolicy;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;)Lio/github/chronotask/misfire/MisfireResult;
+	public static synthetic fun evaluate$default (Lio/github/chronotask/trigger/TriggerService;Lio/github/chronotask/model/TaskDefinition;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;ILjava/lang/Object;)Lio/github/chronotask/misfire/MisfireResult;
+	public static synthetic fun evaluate$default (Lio/github/chronotask/trigger/TriggerService;Lio/github/chronotask/model/TaskSchedule;Lio/github/chronotask/model/MisfirePolicy;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;Ljava/time/Instant;ILjava/lang/Object;)Lio/github/chronotask/misfire/MisfireResult;
+	public final fun getClock ()Lio/github/chronotask/clock/ChronoClock;
+	public final fun getMisfireResolver ()Lio/github/chronotask/misfire/MisfireResolver;
+}
+
+public final class io/github/chronotask/trigger/TriggerSource : java/lang/Enum {
+	public static final field MANUAL Lio/github/chronotask/trigger/TriggerSource;
+	public static final field MISFIRE Lio/github/chronotask/trigger/TriggerSource;
+	public static final field SCHEDULE Lio/github/chronotask/trigger/TriggerSource;
+	public static fun getEntries ()Lkotlin/enums/EnumEntries;
+	public static fun valueOf (Ljava/lang/String;)Lio/github/chronotask/trigger/TriggerSource;
+	public static fun values ()[Lio/github/chronotask/trigger/TriggerSource;
+}
+
+public final class io/github/chronotask/trigger/UnsupportedScheduleException : io/github/chronotask/exception/ChronoTaskException {
+	public fun <init> (Ljava/lang/String;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+

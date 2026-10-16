@@ -1,0 +1,24 @@
+# Gradle and Kotlin generated files
+.gradle/
+.kotlin/
+build/
+
+# Local IDE and Android SDK configuration
+.idea/
+*.iml
+local.properties
+.DS_Store
+
+# Local credentials and signing material
+.env
+.env.*
+!.env.example
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.pem
+*.key
+
+# Personal data unrelated to this project
+/google takeout/

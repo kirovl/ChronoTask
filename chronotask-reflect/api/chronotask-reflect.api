@@ -1,0 +1,15 @@
+public final class io/github/chronotask/reflect/AnnotatedTaskRegistrar {
+	public static final field INSTANCE Lio/github/chronotask/reflect/AnnotatedTaskRegistrar;
+	public static final fun register (Lio/github/chronotask/engine/ChronoTaskEngine;Ljava/lang/Object;)Ljava/util/List;
+}
+
+public final class io/github/chronotask/reflect/AnnotatedTaskRegistrarKt {
+	public static final fun registerAnnotated (Lio/github/chronotask/engine/ChronoTaskEngine;Ljava/lang/Object;)Ljava/util/List;
+}
+
+public final class io/github/chronotask/reflect/ReflectionRegistrationException : io/github/chronotask/exception/ChronoTaskException {
+	public fun <init> (Ljava/lang/String;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/Throwable;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/Throwable;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
