@@ -11,8 +11,8 @@ plugins {
 }
 
 dependencies {
-    implementation("io.github.chronotask:chronotask-core:1.0.0")
-    ksp("io.github.chronotask:chronotask-ksp:1.0.0")
+    implementation("io.github.kirovl:chronotask-core:1.0.0")
+    ksp("io.github.kirovl:chronotask-ksp:1.0.0")
 }
 ```
 

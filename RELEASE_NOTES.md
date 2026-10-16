@@ -43,17 +43,17 @@ ChronoTask is a modern, lightweight, high-performance in-memory task scheduling 
 
 ```groovy
 // Core runtime
-implementation "io.github.chronotask:chronotask-core:1.0.0"
+implementation "io.github.kirovl:chronotask-core:1.0.0"
 
 // Optional Reflection binding
-implementation "io.github.chronotask:chronotask-reflect:1.0.0"
+implementation "io.github.kirovl:chronotask-reflect:1.0.0"
 
 // Optional Kotlin KSP processor
-ksp "io.github.chronotask:chronotask-ksp:1.0.0"
+ksp "io.github.kirovl:chronotask-ksp:1.0.0"
 
 // Optional Java Annotation processor
-annotationProcessor "io.github.chronotask:chronotask-processor:1.0.0"
+annotationProcessor "io.github.kirovl:chronotask-processor:1.0.0"
 
 // Testing utilities
-testImplementation "io.github.chronotask:chronotask-test:1.0.0"
+testImplementation "io.github.kirovl:chronotask-test:1.0.0"
 ```

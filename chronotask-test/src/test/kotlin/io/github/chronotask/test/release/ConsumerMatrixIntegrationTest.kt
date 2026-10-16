@@ -23,11 +23,13 @@ import java.util.concurrent.atomic.AtomicInteger
 class ConsumerMatrixIntegrationTest {
 
     private val userHome = System.getProperty("user.home")
-    private val m2Repo = File(userHome, ".m2/repository/io/github/chronotask")
+    private val publicationGroup = System.getProperty("chronotask.publicationGroup")
+    private val releaseVersion = System.getProperty("chronotask.releaseVersion")
+    private val m2Repo = File(System.getProperty("maven.repo.local"), publicationGroup.replace('.', '/'))
 
     @Test
     fun testKotlinJvmCoreConsumerFromPublishedJar() {
-        val coreJar = File(m2Repo, "chronotask-core/1.0.0/chronotask-core-1.0.0.jar")
+        val coreJar = File(m2Repo, "chronotask-core/$releaseVersion/chronotask-core-$releaseVersion.jar")
         val coroutinesJar = File(userHome, ".gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm/1.9.0").walkTopDown().firstOrNull { it.name.endsWith(".jar") }
 
         val urls = listOfNotNull(coreJar.toURI().toURL(), coroutinesJar?.toURI()?.toURL()).toTypedArray()

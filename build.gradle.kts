@@ -5,13 +5,16 @@ plugins {
     id("com.android.application") version "8.7.2" apply false
     id("org.jetbrains.kotlin.android") version "2.0.21" apply false
     id("org.jetbrains.kotlin.plugin.compose") version "2.0.21" apply false
+    id("org.jetbrains.dokka") version "2.2.0" apply false
+    id("com.gradleup.nmcp") version "1.6.2" apply false
+    id("com.gradleup.nmcp.aggregation") version "1.6.2"
     `maven-publish`
     signing
 }
 
 allprojects {
-    group = "io.github.chronotask"
-    version = "1.0.0"
+    group = providers.gradleProperty("publicationGroup").get()
+    version = providers.gradleProperty("releaseVersion").get()
 
     repositories {
         google()
@@ -26,6 +29,45 @@ val publishedProjects = setOf(
     "chronotask-processor",
     "chronotask-test"
 )
+
+dependencies {
+    publishedProjects.forEach { add("nmcpAggregation", project(":$it")) }
+}
+
+nmcpAggregation {
+    centralPortal {
+        username = providers.environmentVariable("MAVEN_CENTRAL_USERNAME")
+            .orElse(providers.gradleProperty("mavenCentralUsername"))
+        password = providers.environmentVariable("MAVEN_CENTRAL_PASSWORD")
+            .orElse(providers.gradleProperty("mavenCentralPassword"))
+        publishingType = providers.gradleProperty("centralPublishingType").orElse("AUTOMATIC")
+        publicationName = "ChronoTask:${project.version}"
+    }
+}
+
+val validateCentralPublishing by tasks.registering {
+    group = "publishing"
+    description = "Checks Central credentials and signing before uploading the five-module release."
+    doLast {
+        require(!project.version.toString().endsWith("-SNAPSHOT")) {
+            "Central releases require a non-SNAPSHOT releaseVersion."
+        }
+        for ((environmentName, propertyName) in listOf(
+            "MAVEN_CENTRAL_USERNAME" to "mavenCentralUsername",
+            "MAVEN_CENTRAL_PASSWORD" to "mavenCentralPassword",
+            "SIGNING_KEY" to "signing.key"
+        )) {
+            require(!providers.environmentVariable(environmentName)
+                .orElse(providers.gradleProperty(propertyName)).orNull.isNullOrBlank()) {
+                "Missing $environmentName (or Gradle property $propertyName). See docs/publishing.md."
+            }
+        }
+    }
+}
+
+tasks.named("nmcpPublishAggregationToCentralPortal") {
+    dependsOn(validateCentralPublishing)
+}
 
 subprojects {
     tasks.withType<Test>().configureEach {
@@ -57,10 +99,17 @@ subprojects {
     if (name in publishedProjects) {
         apply(plugin = "maven-publish")
         apply(plugin = "signing")
+        apply(plugin = "org.jetbrains.dokka")
+        apply(plugin = "com.gradleup.nmcp")
 
         configure<JavaPluginExtension> {
             withSourcesJar()
             withJavadocJar()
+        }
+
+        tasks.named<Jar>("javadocJar") {
+            from(tasks.named<org.jetbrains.dokka.gradle.tasks.DokkaGeneratePublicationTask>("dokkaGeneratePublicationHtml")
+                .flatMap { it.outputDirectory })
         }
 
         configure<PublishingExtension> {
@@ -74,7 +123,7 @@ subprojects {
                     pom {
                         name.set(project.name)
                         description.set(project.description ?: "ChronoTask: Modern, lightweight in-memory task scheduling framework for Kotlin and Java.")
-                        url.set("https://github.com/chronotask/chronotask")
+                        url.set("https://github.com/kirovl/ChronoTask")
                         licenses {
                             license {
                                 name.set("The Apache License, Version 2.0")
@@ -83,28 +132,30 @@ subprojects {
                         }
                         developers {
                             developer {
-                                id.set("chronotask")
-                                name.set("ChronoTask Contributors")
-                                email.set("contributors@chronotask.github.io")
+                                id.set("kirovl")
+                                name.set("kirovl")
+                                url.set("https://github.com/kirovl")
                             }
                         }
                         scm {
-                            connection.set("scm:git:git://github.com/chronotask/chronotask.git")
-                            developerConnection.set("scm:git:ssh://github.com:chronotask/chronotask.git")
-                            url.set("https://github.com/chronotask/chronotask")
+                            connection.set("scm:git:https://github.com/kirovl/ChronoTask.git")
+                            developerConnection.set("scm:git:ssh://git@github.com/kirovl/ChronoTask.git")
+                            url.set("https://github.com/kirovl/ChronoTask")
                         }
                     }
                 }
             }
         }
 
+        val publication = extensions.getByType<PublishingExtension>().publications["mavenJava"]
         configure<SigningExtension> {
-            val signingKey = System.getenv("SIGNING_KEY") ?: project.findProperty("signing.key") as String?
-            val signingPassword = System.getenv("SIGNING_PASSWORD") ?: project.findProperty("signing.password") as String?
+            val signingKey = providers.environmentVariable("SIGNING_KEY")
+                .orElse(providers.gradleProperty("signing.key")).orNull
+            val signingPassword = providers.environmentVariable("SIGNING_PASSWORD")
+                .orElse(providers.gradleProperty("signing.password")).orElse("").get()
             if (!signingKey.isNullOrBlank()) {
-                useInMemoryPgpKeys(signingKey, signingPassword ?: "")
-                val mavenJava = extensions.getByType<PublishingExtension>().publications["mavenJava"]
-                sign(mavenJava)
+                useInMemoryPgpKeys(signingKey, signingPassword)
+                sign(publication)
             }
         }
     }

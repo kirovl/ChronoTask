@@ -15,3 +15,18 @@ dependencies {
     testImplementation(project(":chronotask-ksp"))
     testImplementation(project(":chronotask-processor"))
 }
+
+tasks.named<Test>("test") {
+    // Verify artifacts from this build, including when running tests on a fresh machine.
+    dependsOn(
+        ":chronotask-core:publishToMavenLocal",
+        ":chronotask-reflect:publishToMavenLocal",
+        ":chronotask-ksp:publishToMavenLocal",
+        ":chronotask-processor:publishToMavenLocal",
+        ":chronotask-test:publishToMavenLocal"
+    )
+    systemProperty("chronotask.publicationGroup", project.group.toString())
+    systemProperty("chronotask.releaseVersion", project.version.toString())
+    systemProperty("maven.repo.local", System.getProperty("maven.repo.local")
+        ?: "${System.getProperty("user.home")}/.m2/repository")
+}

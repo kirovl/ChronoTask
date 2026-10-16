@@ -6,8 +6,8 @@
 
 ```kotlin
 dependencies {
-    implementation("io.github.chronotask:chronotask-core:1.0.0")
-    implementation("io.github.chronotask:chronotask-reflect:1.0.0")
+    implementation("io.github.kirovl:chronotask-core:1.0.0")
+    implementation("io.github.kirovl:chronotask-reflect:1.0.0")
 }
 ```
 

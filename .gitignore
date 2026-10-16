@@ -19,6 +19,7 @@ local.properties
 *.pfx
 *.pem
 *.key
+.publishing/
 
 # Personal data unrelated to this project
 /google takeout/

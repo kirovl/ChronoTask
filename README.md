@@ -26,6 +26,9 @@ A modern, lightweight, coroutine-native task scheduling framework for Kotlin and
 
 ## Quick Start
 
+For maintainer setup, signing credentials and publishing all five modules to Maven
+Central, see the [publishing guide](docs/publishing.md).
+
 ### Gradle (Kotlin DSL)
 
 #### Option A: Compile-Time KSP (Recommended for Kotlin / Android)
@@ -38,13 +41,13 @@ plugins {
 
 dependencies {
     // Core engine, DSL, builders, and annotation contracts
-    implementation("io.github.chronotask:chronotask-core:1.0.0")
+    implementation("io.github.kirovl:chronotask-core:1.0.0")
 
     // KSP processor for compile-time direct executable bindings (Zero Reflection)
-    ksp("io.github.chronotask:chronotask-ksp:1.0.0")
+    ksp("io.github.kirovl:chronotask-ksp:1.0.0")
 
     // Testing utilities with VirtualTimeSource
-    testImplementation("io.github.chronotask:chronotask-test:1.0.0")
+    testImplementation("io.github.kirovl:chronotask-test:1.0.0")
 }
 ```
 
@@ -57,12 +60,12 @@ plugins {
 
 dependencies {
     // Core engine
-    implementation("io.github.chronotask:chronotask-core:1.0.0")
+    implementation("io.github.kirovl:chronotask-core:1.0.0")
 
     // Standard Java Annotation Processor (Zero Reflection, JSR-269)
-    annotationProcessor("io.github.chronotask:chronotask-processor:1.0.0")
+    annotationProcessor("io.github.kirovl:chronotask-processor:1.0.0")
 
-    testImplementation("io.github.chronotask:chronotask-test:1.0.0")
+    testImplementation("io.github.kirovl:chronotask-test:1.0.0")
 }
 ```
 
@@ -70,9 +73,9 @@ dependencies {
 
 ```kotlin
 dependencies {
-    implementation("io.github.chronotask:chronotask-core:1.0.0")
-    implementation("io.github.chronotask:chronotask-reflect:1.0.0")
-    testImplementation("io.github.chronotask:chronotask-test:1.0.0")
+    implementation("io.github.kirovl:chronotask-core:1.0.0")
+    implementation("io.github.kirovl:chronotask-reflect:1.0.0")
+    testImplementation("io.github.kirovl:chronotask-test:1.0.0")
 }
 ```
 

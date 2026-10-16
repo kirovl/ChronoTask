@@ -5,7 +5,7 @@
 ## Setup
 
 ```kotlin
-testImplementation("io.github.chronotask:chronotask-test:1.0.0")
+testImplementation("io.github.kirovl:chronotask-test:1.0.0")
 ```
 
 ## Example

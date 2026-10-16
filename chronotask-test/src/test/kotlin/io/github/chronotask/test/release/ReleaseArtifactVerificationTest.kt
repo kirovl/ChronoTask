@@ -9,8 +9,9 @@ import java.util.jar.JarFile
 
 class ReleaseArtifactVerificationTest {
 
-    private val userHome = System.getProperty("user.home")
-    private val m2Repo = File(userHome, ".m2/repository/io/github/chronotask")
+    private val publicationGroup = System.getProperty("chronotask.publicationGroup")
+    private val releaseVersion = System.getProperty("chronotask.releaseVersion")
+    private val m2Repo = File(System.getProperty("maven.repo.local"), publicationGroup.replace('.', '/'))
 
     @Test
     fun testAllPublishedArtifactsExistWithRequiredComponents() {
@@ -23,14 +24,14 @@ class ReleaseArtifactVerificationTest {
         )
 
         for (moduleName in publishedModules) {
-            val moduleDir = File(m2Repo, "$moduleName/1.0.0")
+            val moduleDir = File(m2Repo, "$moduleName/$releaseVersion")
             assertTrue(moduleDir.exists(), "Directory $moduleDir must exist after publishToMavenLocal")
 
-            val jarFile = File(moduleDir, "$moduleName-1.0.0.jar")
-            val sourcesJar = File(moduleDir, "$moduleName-1.0.0-sources.jar")
-            val javadocJar = File(moduleDir, "$moduleName-1.0.0-javadoc.jar")
-            val pomFile = File(moduleDir, "$moduleName-1.0.0.pom")
-            val moduleFile = File(moduleDir, "$moduleName-1.0.0.module")
+            val jarFile = File(moduleDir, "$moduleName-$releaseVersion.jar")
+            val sourcesJar = File(moduleDir, "$moduleName-$releaseVersion-sources.jar")
+            val javadocJar = File(moduleDir, "$moduleName-$releaseVersion-javadoc.jar")
+            val pomFile = File(moduleDir, "$moduleName-$releaseVersion.pom")
+            val moduleFile = File(moduleDir, "$moduleName-$releaseVersion.module")
 
             assertTrue(jarFile.exists(), "$jarFile must exist")
             assertTrue(sourcesJar.exists(), "$sourcesJar must exist")
@@ -44,20 +45,25 @@ class ReleaseArtifactVerificationTest {
             assertTrue(javadocJar.length() > 0, "$javadocJar must not be empty")
             assertTrue(pomFile.length() > 0, "$pomFile must not be empty")
 
+            JarFile(javadocJar).use { jar ->
+                assertNotNull(jar.getEntry("index.html"), "Documentation JAR must contain generated API documentation")
+            }
+
             // Validate POM content
             val pomContent = pomFile.readText()
-            assertTrue(pomContent.contains("<groupId>io.github.chronotask</groupId>"))
+            assertTrue(pomContent.contains("<groupId>$publicationGroup</groupId>"))
             assertTrue(pomContent.contains("<artifactId>$moduleName</artifactId>"))
-            assertTrue(pomContent.contains("<version>1.0.0</version>"))
+            assertTrue(pomContent.contains("<version>$releaseVersion</version>"))
             assertTrue(pomContent.contains("<name>$moduleName</name>"))
             assertTrue(pomContent.contains("Apache License, Version 2.0"))
+            assertTrue(pomContent.contains("<url>https://github.com/kirovl/ChronoTask</url>"))
             assertFalse(pomContent.contains("SNAPSHOT"), "Release POM must contain zero SNAPSHOT dependencies")
         }
     }
 
     @Test
     fun testCoreJarDoesNotContainProcessorOrTestClasses() {
-        val coreJar = File(m2Repo, "chronotask-core/1.0.0/chronotask-core-1.0.0.jar")
+        val coreJar = File(m2Repo, "chronotask-core/$releaseVersion/chronotask-core-$releaseVersion.jar")
         assertTrue(coreJar.exists())
 
         JarFile(coreJar).use { jar ->
@@ -77,7 +83,7 @@ class ReleaseArtifactVerificationTest {
 
     @Test
     fun testProcessorJarContainsSpiMetadata() {
-        val processorJar = File(m2Repo, "chronotask-processor/1.0.0/chronotask-processor-1.0.0.jar")
+        val processorJar = File(m2Repo, "chronotask-processor/$releaseVersion/chronotask-processor-$releaseVersion.jar")
         assertTrue(processorJar.exists())
 
         JarFile(processorJar).use { jar ->
@@ -91,7 +97,7 @@ class ReleaseArtifactVerificationTest {
 
     @Test
     fun testKspJarContainsSpiMetadata() {
-        val kspJar = File(m2Repo, "chronotask-ksp/1.0.0/chronotask-ksp-1.0.0.jar")
+        val kspJar = File(m2Repo, "chronotask-ksp/$releaseVersion/chronotask-ksp-$releaseVersion.jar")
         assertTrue(kspJar.exists())
 
         JarFile(kspJar).use { jar ->
@@ -105,7 +111,7 @@ class ReleaseArtifactVerificationTest {
 
     @Test
     fun testReflectJarContainsProGuardAndR8ConsumerRules() {
-        val reflectJar = File(m2Repo, "chronotask-reflect/1.0.0/chronotask-reflect-1.0.0.jar")
+        val reflectJar = File(m2Repo, "chronotask-reflect/$releaseVersion/chronotask-reflect-$releaseVersion.jar")
         assertTrue(reflectJar.exists())
 
         JarFile(reflectJar).use { jar ->
