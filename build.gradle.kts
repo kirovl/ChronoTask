@@ -42,6 +42,7 @@ nmcpAggregation {
             .orElse(providers.gradleProperty("mavenCentralPassword"))
         publishingType = providers.gradleProperty("centralPublishingType").orElse("AUTOMATIC")
         publicationName = "ChronoTask:${project.version}"
+        publishingTimeout = java.time.Duration.ofMinutes(15)
     }
 }
 

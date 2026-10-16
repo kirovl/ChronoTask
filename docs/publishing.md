@@ -64,8 +64,10 @@ The workflow takes the version from the tag or manual input, checks the credenti
 runs tests and API/artifact checks, signs the publications, then uploads the five
 libraries in one deployment. It uses `AUTOMATIC` publishing, so Central publishes the
 deployment after validation succeeds. Check the workflow result and Central Portal
-deployment status before announcing the release. Availability in Central and indexing
-can lag behind the upload.
+deployment status before announcing the release. The upload task waits up to 15 minutes
+for Central to confirm publication. A timeout does not undo an accepted deployment;
+check its existing status before retrying. Availability in Central and indexing can lag
+behind the upload.
 
 Release coordinates on Central cannot be overwritten. Use a new version for the
 next release; do not publish the same version again from a tag and a manual run.
