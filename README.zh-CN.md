@@ -107,6 +107,8 @@ dependencies {
 
 独立 JVM 程序还需要保持进程运行，不能在启动引擎后立即退出 `main()`。完整的启动和退出示例可参考 [Java 示例](sample-java/)。
 
+开发中的修复调整了首次触发语义：固定频率、固定延迟和单次任务从首次开始自动调度时计算初始延迟，默认 `0` 表示立即触发；注册后尚未启动的等待时间不计入延迟。正常的定时器唤醒延迟也不会导致默认 `SKIP` 一直跳过任务。该修复尚未包含在 Maven Central 的 `1.0.0` 中，详见[变更记录](CHANGELOG.md)和[生命周期说明](docs/lifecycle.md#first-trigger-and-initial-delay)。
+
 ### 1. Java 注解处理器（`chronotask-processor`）
 
 编译时会为任务类生成类型安全的绑定类，通过直接方法调用执行任务：

@@ -20,9 +20,12 @@ class PrecisionRegressionTest {
         try {
             engine.register(TaskDefinition("rate", "rate", TaskSchedule.FixedRate(1000),
                 ConcurrencyPolicy.ALLOW, MisfirePolicy.CatchUp(2), executable = TaskExecutable { calls += it.trigger.scheduledAt }))
-            time.advanceTo(base.plusSeconds(3).plusNanos(1))
             engine.start()
-            assertEquals(2, calls.size, "Four missed ticks must yield only the bounded catch-up batch")
+            engine.pause()
+            calls.clear()
+            time.advanceTo(base.plusSeconds(3).plusNanos(1))
+            engine.resume()
+            assertEquals(2, calls.size, "Three missed ticks must yield only the bounded catch-up batch")
         } finally { engine.stop() }
     }
 
@@ -34,8 +37,11 @@ class PrecisionRegressionTest {
         try {
             engine.register(TaskDefinition("rate", "rate", TaskSchedule.FixedRate(1000),
                 ConcurrencyPolicy.ALLOW, MisfirePolicy.FIRE_ONCE, executable = TaskExecutable { calls += it.trigger.scheduledAt }))
-            time.advanceTo(base.plusSeconds(3).plusNanos(1))
             engine.start()
+            engine.pause()
+            calls.clear()
+            time.advanceTo(base.plusSeconds(3).plusNanos(1))
+            engine.resume()
             assertEquals(listOf(base.plusSeconds(3)), calls)
         } finally { engine.stop() }
     }

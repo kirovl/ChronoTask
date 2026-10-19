@@ -23,6 +23,9 @@ internal class TaskRuntime(
 
     var taskPaused: Boolean = !definition.isEnabled
     var taskCancelled: Boolean = false
+    // Relative initial delays begin at first automatic scheduling, not registration.
+    // Preserve this anchor across pause/resume so actual misfires are still handled.
+    var scheduleActivatedAt: Instant? = null
     var lastScheduledAt: Instant? = null
     var lastStartedAt: Instant? = null
     var lastCompletedAt: Instant? = null

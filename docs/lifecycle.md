@@ -18,6 +18,20 @@ CREATED ───────► RUNNING ◄────────────
 - **`PAUSED`**: All automatic trigger generation is paused. Running executions complete normally.
 - **`STOPPED`**: Terminal state. All schedulers and pending executions are cancelled and resources are released.
 
+## First Trigger and Initial Delay
+
+For `FixedRate`, `FixedDelay` and `Once`, the initial relative delay begins when the
+task first participates in automatic scheduling, rather than when it is registered.
+This happens when its scheduler first runs after engine startup, registration into a
+running engine, or the first resume of an initially disabled task. With a zero initial
+delay, that activation produces a normal immediate trigger even with default `SKIP`.
+The snapshot's `registeredAt` still records the original registration time.
+
+After activation, pause/resume preserves that timeline. Resuming after an actual
+missed deadline applies the configured misfire policy; it does not restart the initial
+delay. A fixed-delay task measures each subsequent delay from execution completion.
+Cron and custom schedules retain their calculator-defined timeline semantics.
+
 ## Task Controls via `TaskHandle`
 
 - `handle.pause()`: Pauses automatic trigger generation for this specific task.

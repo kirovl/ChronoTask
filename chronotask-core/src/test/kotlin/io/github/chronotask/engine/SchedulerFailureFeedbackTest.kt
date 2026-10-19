@@ -25,9 +25,11 @@ class SchedulerFailureFeedbackTest {
                 override suspend fun delay(millis: Long) { throw error }
             }
         )).use { engine ->
-            val schedule = if (skipMisfire) TaskSchedule.FixedRate(1000) else TaskSchedule.Once(1000)
+            val schedule = if (skipMisfire) TaskSchedule.Custom { context ->
+                (context.lastScheduledAt ?: context.registeredAt).plusMillis(1000)
+            } else TaskSchedule.Once(1000)
             val bad = engine.register(TaskDefinition("timer-failure", schedule = schedule, executable = {}))
-            if (skipMisfire) time.advanceBy(100)
+            if (skipMisfire) time.advanceBy(1500)
             engine.register(TaskDefinition("healthy", schedule = TaskSchedule.Once(),
                 executable = { healthyCalls++ }))
             engine.start()

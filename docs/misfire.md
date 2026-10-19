@@ -20,6 +20,16 @@ For `FixedDelay`, `SKIP` discards the overdue trigger and schedules the next att
 the current time plus the configured delay. It does not terminate the recurring task.
 After an execution completes, the next delay is measured from its completion time.
 
+Misfire evaluation happens when choosing the next trigger, including after a
+pause/resume. Once a future trigger has been chosen and its timer is awaited, normal
+timer wakeup lateness does not cause that same trigger to be classified as missed
+again. This also applies to the next normal trigger returned by `SKIP` recovery,
+preventing recurring tasks from being skipped indefinitely.
+
+Relative initial delays start at first automatic scheduling activation; time spent
+registered before startup is not a missed execution. See the
+[lifecycle guide](lifecycle.md#first-trigger-and-initial-delay).
+
 Cron recovery locates the latest missed trigger without scanning every occurrence in
 the offline interval. `SKIP` and `FIRE_ONCE` remain bounded for long outages;
 `CatchUp` generates only the configured number of missed triggers. Cron searches

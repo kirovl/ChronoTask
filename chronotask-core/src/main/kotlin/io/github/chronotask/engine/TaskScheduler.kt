@@ -8,6 +8,8 @@ import io.github.chronotask.execution.SubmissionResult
 import io.github.chronotask.model.EngineState
 import io.github.chronotask.model.TaskSchedule
 import io.github.chronotask.trigger.TriggerService
+import io.github.chronotask.trigger.ScheduledTrigger
+import io.github.chronotask.trigger.TriggerSource
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
@@ -118,10 +120,21 @@ internal class TaskScheduler(
             }
 
             val now = clock.now()
+            val timelineAnchor = synchronized(runtime.taskLock) {
+                if (runtime.schedulerGeneration != myGen ||
+                    getEngineState() != EngineState.RUNNING || runtime.taskPaused || runtime.taskCancelled
+                ) return
+                when (runtime.definition.schedule) {
+                    is TaskSchedule.FixedRate, is TaskSchedule.FixedDelay, is TaskSchedule.Once -> {
+                        runtime.scheduleActivatedAt ?: now.also { runtime.scheduleActivatedAt = it }
+                    }
+                    else -> runtime.registeredAt
+                }
+            }
             val result = triggerService.evaluate(
                 schedule = runtime.definition.schedule,
                 misfirePolicy = runtime.definition.misfirePolicy,
-                registeredAt = runtime.registeredAt,
+                registeredAt = timelineAnchor,
                 lastScheduledAt = lastSched,
                 lastStartedAt = lastStart,
                 lastCompletedAt = lastComp,
@@ -140,80 +153,72 @@ internal class TaskScheduler(
             var completionToAwait: CompletableDeferred<Unit>? = null
 
             if (result.triggers.isEmpty()) {
-                val nextPlanned = result.nextScheduledAt
                 synchronized(runtime.taskLock) {
                     if (runtime.schedulerGeneration != myGen) return
                     if (result.alignedLastScheduledAt != null) {
                         runtime.lastScheduledAt = result.alignedLastScheduledAt
                     }
                 }
-                if (nextPlanned != null) {
-                    val currentNow = clock.now()
-                    if (nextPlanned.isAfter(currentNow)) {
-                        timer.sleepUntil(nextPlanned, clock)
+            }
+            // A resolver's next normal trigger is already planned. Commit to it
+            // before sleeping, just as with a future non-misfire trigger. Re-evaluating
+            // after waking turns ordinary timer lateness into another SKIP forever.
+            val triggers = result.triggers.ifEmpty {
+                result.nextScheduledAt?.let {
+                    listOf(ScheduledTrigger(it, now, TriggerSource.SCHEDULE))
+                } ?: emptyList()
+            }
+            for (trigger in triggers) {
+                val currentNow = clock.now()
+                if (trigger.scheduledAt.isAfter(currentNow)) {
+                    timer.sleepUntil(trigger.scheduledAt, clock)
+                }
+
+                val execution = TaskExecution(
+                    taskId = runtime.definition.id,
+                    trigger = trigger
+                )
+                val deferred = if (runtime.definition.schedule is TaskSchedule.FixedDelay) {
+                    CompletableDeferred<Unit>()
+                } else null
+
+                synchronized(runtime.taskLock) {
+                    if (runtime.schedulerGeneration != myGen ||
+                        getEngineState() != EngineState.RUNNING ||
+                        runtime.taskPaused ||
+                        runtime.taskCancelled
+                    ) {
+                        return
                     }
-                    synchronized(runtime.taskLock) {
-                        if (runtime.schedulerGeneration != myGen ||
-                            getEngineState() != EngineState.RUNNING ||
-                            runtime.taskPaused ||
-                            runtime.taskCancelled
-                        ) {
-                            return
-                        }
+                    runtime.lastScheduledAt = trigger.scheduledAt
+                    if (deferred != null) {
+                        // Install feedback before submitting: execution may complete synchronously.
+                        runtime.completionDeferred = deferred
+                        runtime.completionExecutionId = execution.executionId
                     }
                 }
-            } else {
-                for (trigger in result.triggers) {
-                    val currentNow = clock.now()
-                    if (trigger.scheduledAt.isAfter(currentNow)) {
-                        timer.sleepUntil(trigger.scheduledAt, clock)
-                    }
 
-                    val execution = TaskExecution(
-                        taskId = runtime.definition.id,
-                        trigger = trigger
-                    )
-                    val deferred = if (runtime.definition.schedule is TaskSchedule.FixedDelay) {
-                        CompletableDeferred<Unit>()
-                    } else null
-
-                    synchronized(runtime.taskLock) {
-                        if (runtime.schedulerGeneration != myGen ||
-                            getEngineState() != EngineState.RUNNING ||
-                            runtime.taskPaused ||
-                            runtime.taskCancelled
-                        ) {
-                            return
-                        }
-                        runtime.lastScheduledAt = trigger.scheduledAt
-                        if (deferred != null) {
-                            // Install feedback before submitting: execution may complete synchronously.
-                            runtime.completionDeferred = deferred
-                            runtime.completionExecutionId = execution.executionId
-                        }
-                    }
-
-                    val submission = submitExecution(runtime, execution)
-                    if (deferred != null) {
-                        if (submission is SubmissionResult.Started || submission is SubmissionResult.Queued) {
-                            completionToAwait = deferred
-                        } else {
-                            // Skipped/rejected submissions will never deliver a completion callback.
-                            synchronized(runtime.taskLock) {
-                                if (runtime.completionExecutionId == execution.executionId) {
-                                    runtime.completionDeferred = null
-                                    runtime.completionExecutionId = null
-                                }
+                val submission = submitExecution(runtime, execution)
+                if (deferred != null) {
+                    if (submission is SubmissionResult.Started || submission is SubmissionResult.Queued) {
+                        completionToAwait = deferred
+                    } else {
+                        // Skipped/rejected submissions will never deliver a completion callback.
+                        synchronized(runtime.taskLock) {
+                            if (runtime.completionExecutionId == execution.executionId) {
+                                runtime.completionDeferred = null
+                                runtime.completionExecutionId = null
                             }
                         }
                     }
                 }
-                synchronized(runtime.taskLock) {
-                    if (runtime.schedulerGeneration != myGen) return
-                    // Advance past omitted catch-up triggers only after dispatching the bounded batch.
-                    if (result.alignedLastScheduledAt != null) {
-                        runtime.lastScheduledAt = result.alignedLastScheduledAt
-                    }
+            }
+            synchronized(runtime.taskLock) {
+                if (runtime.schedulerGeneration != myGen) return
+                // Advance past omitted catch-up triggers only after dispatching the bounded batch.
+                // SKIP was aligned before its next normal trigger; do not overwrite that trigger.
+                if (result.triggers.isNotEmpty() && result.alignedLastScheduledAt != null) {
+                    runtime.lastScheduledAt = result.alignedLastScheduledAt
                 }
             }
 

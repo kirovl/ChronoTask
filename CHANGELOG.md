@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add `TaskHandle.unregister()` for atomic registration-specific removal; custom handles can implement the operation without changing existing handle methods.
 
 ### Fixed
+- Start relative initial delays when automatic scheduling first activates instead of registration, preserving the activated timeline across pause/resume and keeping registration timestamps unchanged.
+- Dispatch the next normal trigger chosen during SKIP recovery without reclassifying ordinary timer wakeup lateness as another misfire, preventing default fixed-delay tasks from being skipped indefinitely.
 - Make Android sample tests deterministic with coroutine test dispatchers and correct trigger times; atomically retain events, count failures once, refresh terminal UI state, and isolate statistics across engine recreation.
 - Apply JUnit Platform to Android unit test tasks so Jupiter tests are discovered instead of reporting a successful zero-test run.
 - Guard Java APT rollback against self-suppression when a handle throws the original registration exception, preserving the original error and completing remaining cleanup.

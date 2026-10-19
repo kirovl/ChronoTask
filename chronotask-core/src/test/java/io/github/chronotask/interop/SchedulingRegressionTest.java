@@ -55,11 +55,11 @@ class SchedulingRegressionTest {
         var count = new AtomicInteger();
         try {
             var handle = engine.register(new TaskDefinition("skip", new TaskSchedule.FixedDelay(1000), TaskExecutable.fromRunnable(count::incrementAndGet)));
-            time.advanceBy(1); engine.start();
+            engine.start(); engine.pause(); time.advanceBy(1001); engine.resume();
             assertFalse(handle.snapshot().getScheduleCompleted(), "A 1 ms late recurring schedule must not terminate");
-            assertEquals(0, count.get());
+            assertEquals(1, count.get(), "Only the initial execution ran before the actual misfire");
             time.advanceBy(3000);
-            assertEquals(3, count.get(), "Skipped recurring tasks must resume on the reanchored timeline");
+            assertEquals(4, count.get(), "Skipped recurring tasks must resume on the reanchored timeline");
         } finally { engine.stop(); }
     }
     @Test void namedDispatcherMustRunTask() throws Exception {

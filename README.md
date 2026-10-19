@@ -85,6 +85,12 @@ dependencies {
 
 ## Usage Guide
 
+The development version fixes startup scheduling: relative initial delays start when
+automatic scheduling first activates, and normal timer wakeup lateness does not cause
+default `SKIP` to starve recurring tasks. These fixes are not included in the published
+`1.0.0`; see the [changelog](CHANGELOG.md) and
+[lifecycle guide](docs/lifecycle.md#first-trigger-and-initial-delay).
+
 ### 1. Compile-Time Java Annotation Processing (`chronotask-processor`)
 
 Using `chronotask-processor`, ChronoTask generates direct, typed binding classes at compile-time with **zero reflection** and **zero runtime overhead**:
