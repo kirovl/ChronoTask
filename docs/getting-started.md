@@ -9,8 +9,8 @@ Add ChronoTask to your build tool:
 ### Gradle (Kotlin DSL)
 ```kotlin
 dependencies {
-    implementation("io.github.kirovl:chronotask-core:1.0.0")
-    testImplementation("io.github.kirovl:chronotask-test:1.0.0")
+    implementation("io.github.kirovl:chronotask-core:1.0.1")
+    testImplementation("io.github.kirovl:chronotask-test:1.0.1")
 }
 ```
 
@@ -19,7 +19,7 @@ dependencies {
 <dependency>
     <groupId>io.github.kirovl</groupId>
     <artifactId>chronotask-core</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 

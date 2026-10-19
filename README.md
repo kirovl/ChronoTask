@@ -43,13 +43,13 @@ plugins {
 
 dependencies {
     // Core engine, DSL, builders, and annotation contracts
-    implementation("io.github.kirovl:chronotask-core:1.0.0")
+    implementation("io.github.kirovl:chronotask-core:1.0.1")
 
     // KSP processor for compile-time direct executable bindings (Zero Reflection)
-    ksp("io.github.kirovl:chronotask-ksp:1.0.0")
+    ksp("io.github.kirovl:chronotask-ksp:1.0.1")
 
     // Testing utilities with VirtualTimeSource
-    testImplementation("io.github.kirovl:chronotask-test:1.0.0")
+    testImplementation("io.github.kirovl:chronotask-test:1.0.1")
 }
 ```
 
@@ -62,12 +62,12 @@ plugins {
 
 dependencies {
     // Core engine
-    implementation("io.github.kirovl:chronotask-core:1.0.0")
+    implementation("io.github.kirovl:chronotask-core:1.0.1")
 
     // Standard Java Annotation Processor (Zero Reflection, JSR-269)
-    annotationProcessor("io.github.kirovl:chronotask-processor:1.0.0")
+    annotationProcessor("io.github.kirovl:chronotask-processor:1.0.1")
 
-    testImplementation("io.github.kirovl:chronotask-test:1.0.0")
+    testImplementation("io.github.kirovl:chronotask-test:1.0.1")
 }
 ```
 
@@ -75,9 +75,9 @@ dependencies {
 
 ```kotlin
 dependencies {
-    implementation("io.github.kirovl:chronotask-core:1.0.0")
-    implementation("io.github.kirovl:chronotask-reflect:1.0.0")
-    testImplementation("io.github.kirovl:chronotask-test:1.0.0")
+    implementation("io.github.kirovl:chronotask-core:1.0.1")
+    implementation("io.github.kirovl:chronotask-reflect:1.0.1")
+    testImplementation("io.github.kirovl:chronotask-test:1.0.1")
 }
 ```
 
@@ -85,10 +85,10 @@ dependencies {
 
 ## Usage Guide
 
-The development version fixes startup scheduling: relative initial delays start when
+Version `1.0.1` fixes startup scheduling: relative initial delays start when
 automatic scheduling first activates, and normal timer wakeup lateness does not cause
-default `SKIP` to starve recurring tasks. These fixes are not included in the published
-`1.0.0`; see the [changelog](CHANGELOG.md) and
+default `SKIP` to starve recurring tasks. Upgrade all ChronoTask modules together from
+`1.0.0` to `1.0.1`; see the [changelog](CHANGELOG.md) and
 [lifecycle guide](docs/lifecycle.md#first-trigger-and-initial-delay).
 
 ### 1. Compile-Time Java Annotation Processing (`chronotask-processor`)

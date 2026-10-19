@@ -6,8 +6,8 @@
 
 ```kotlin
 dependencies {
-    implementation("io.github.kirovl:chronotask-core:1.0.0")
-    annotationProcessor("io.github.kirovl:chronotask-processor:1.0.0")
+    implementation("io.github.kirovl:chronotask-core:1.0.1")
+    annotationProcessor("io.github.kirovl:chronotask-processor:1.0.1")
 }
 ```
 

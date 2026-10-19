@@ -50,7 +50,7 @@ class JavaEngineInteropTest {
         TaskDefinition definition = new TaskDefinition(
                 "java-engine-task",
                 "Java Engine Task",
-                new TaskSchedule.FixedRate(5, TimeUnit.SECONDS),
+                new TaskSchedule.FixedRate(5, TimeUnit.SECONDS, 5, TimeUnit.SECONDS),
                 TaskExecutable.fromJava(context -> count.incrementAndGet())
         );
 

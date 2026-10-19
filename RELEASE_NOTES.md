@@ -1,3 +1,37 @@
+# ChronoTask 1.0.1 Release Notes
+
+This patch fixes startup timing and recurring-task starvation with the default `SKIP` misfire policy.
+
+## Scheduling fixes
+
+- Initial delays for `FixedRate`, `FixedDelay` and `Once` start when the task first participates in automatic scheduling, rather than at registration. A zero initial delay normally triggers immediately on activation.
+- After `SKIP` recovery chooses the next normal trigger, ordinary timer wakeup lateness no longer causes that trigger to be skipped repeatedly.
+- Fixed-delay tasks continue to measure subsequent delays from execution completion. Pause/resume retains the existing timeline and applies the configured policy to genuinely missed triggers.
+- Snapshot registration timestamps and public API signatures remain unchanged.
+
+## Upgrade
+
+Update all ChronoTask modules in your project to `1.0.1`. Existing `1.0.0` artifacts on Maven Central are unchanged. The default `SKIP` policy can be retained.
+
+```kotlin
+implementation("io.github.kirovl:chronotask-core:1.0.1")
+ksp("io.github.kirovl:chronotask-ksp:1.0.1")
+// Optional alternatives and testing support:
+// annotationProcessor("io.github.kirovl:chronotask-processor:1.0.1")
+// implementation("io.github.kirovl:chronotask-reflect:1.0.1")
+// testImplementation("io.github.kirovl:chronotask-test:1.0.1")
+```
+
+For Kotlin 1.9.10 consumers, use the matching KSP Gradle plugin `1.9.10-1.0.13`; the ChronoTask dependency version remains `1.0.1`.
+
+## Verification
+
+- 641 test executions pass, including actual default-clock execution, activation timing, all misfire policies around pause/resume, and Android Debug/Release unit tests.
+- All five modules pass public API checks.
+- A standalone Kotlin 1.9.10 + KSP 1.9.10-1.0.13 consumer verifies generated bindings and actual task execution.
+
+---
+
 # ChronoTask 1.0.0 Release Notes
 
 We are excited to announce the General Availability (GA) of **ChronoTask 1.0.0**!

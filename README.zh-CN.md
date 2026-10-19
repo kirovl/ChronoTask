@@ -24,7 +24,7 @@
 
 ## 快速开始
 
-五个模块均使用 Maven groupId `io.github.kirovl`，当前版本为 `1.0.0`。源码包名仍为 `io.github.chronotask`，导入代码时请使用该包名。
+五个模块均使用 Maven groupId `io.github.kirovl`，当前版本为 `1.0.1`。源码包名仍为 `io.github.chronotask`，导入代码时请使用该包名。
 
 | 模块 | 用途 |
 | --- | --- |
@@ -58,13 +58,13 @@ plugins {
 
 dependencies {
     // 核心引擎、DSL、Builder 和调度注解
-    implementation("io.github.kirovl:chronotask-core:1.0.0")
+    implementation("io.github.kirovl:chronotask-core:1.0.1")
 
     // 在编译期生成绑定代码，运行时无需反射
-    ksp("io.github.kirovl:chronotask-ksp:1.0.0")
+    ksp("io.github.kirovl:chronotask-ksp:1.0.1")
 
     // 包含 VirtualTimeSource 的测试工具
-    testImplementation("io.github.kirovl:chronotask-test:1.0.0")
+    testImplementation("io.github.kirovl:chronotask-test:1.0.1")
 }
 ```
 
@@ -80,12 +80,12 @@ plugins {
 }
 
 dependencies {
-    implementation("io.github.kirovl:chronotask-core:1.0.0")
+    implementation("io.github.kirovl:chronotask-core:1.0.1")
 
     // 标准 JSR-269 注解处理器，运行时无需反射
-    annotationProcessor("io.github.kirovl:chronotask-processor:1.0.0")
+    annotationProcessor("io.github.kirovl:chronotask-processor:1.0.1")
 
-    testImplementation("io.github.kirovl:chronotask-test:1.0.0")
+    testImplementation("io.github.kirovl:chronotask-test:1.0.1")
 }
 ```
 
@@ -95,9 +95,9 @@ dependencies {
 
 ```kotlin
 dependencies {
-    implementation("io.github.kirovl:chronotask-core:1.0.0")
-    implementation("io.github.kirovl:chronotask-reflect:1.0.0")
-    testImplementation("io.github.kirovl:chronotask-test:1.0.0")
+    implementation("io.github.kirovl:chronotask-core:1.0.1")
+    implementation("io.github.kirovl:chronotask-reflect:1.0.1")
+    testImplementation("io.github.kirovl:chronotask-test:1.0.1")
 }
 ```
 
@@ -107,7 +107,7 @@ dependencies {
 
 独立 JVM 程序还需要保持进程运行，不能在启动引擎后立即退出 `main()`。完整的启动和退出示例可参考 [Java 示例](sample-java/)。
 
-开发中的修复调整了首次触发语义：固定频率、固定延迟和单次任务从首次开始自动调度时计算初始延迟，默认 `0` 表示立即触发；注册后尚未启动的等待时间不计入延迟。正常的定时器唤醒延迟也不会导致默认 `SKIP` 一直跳过任务。该修复尚未包含在 Maven Central 的 `1.0.0` 中，详见[变更记录](CHANGELOG.md)和[生命周期说明](docs/lifecycle.md#first-trigger-and-initial-delay)。
+`1.0.1` 修复了首次触发语义：固定频率、固定延迟和单次任务从首次开始自动调度时计算初始延迟，默认 `0` 表示立即触发；注册后尚未启动的等待时间不计入延迟。正常的定时器唤醒延迟也不会导致默认 `SKIP` 一直跳过任务。请将各 ChronoTask 模块从 `1.0.0` 统一升级到 `1.0.1`，详见[变更记录](CHANGELOG.md)和[生命周期说明](docs/lifecycle.md#first-trigger-and-initial-delay)。
 
 ### 1. Java 注解处理器（`chronotask-processor`）
 
@@ -470,7 +470,7 @@ JUnit 5 项目还需在测试任务中启用 `useJUnitPlatform()`。更多示例
 - [兼容性说明](docs/compatibility.md)
 - [Maven Central 发布流程](docs/publishing.md)
 
-Cron 支持 Quartz 和 UNIX 方言，但并不包含所有 Quartz 扩展语法；`1.0.0` 不支持 `L`、`W`、`#`。接入前请结合 Cron 指南和兼容性说明确认适用范围。
+Cron 支持 Quartz 和 UNIX 方言，但并不包含所有 Quartz 扩展语法；`1.0.1` 不支持 `L`、`W`、`#`。接入前请结合 Cron 指南和兼容性说明确认适用范围。
 
 ## 许可证
 

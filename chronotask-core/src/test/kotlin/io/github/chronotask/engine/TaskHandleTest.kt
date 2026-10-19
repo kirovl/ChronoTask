@@ -5,8 +5,10 @@ import io.github.chronotask.model.ConcurrencyPolicy
 import io.github.chronotask.model.TaskDefinition
 import io.github.chronotask.model.TaskSchedule
 import io.github.chronotask.model.TaskState
+import io.github.chronotask.trigger.TriggerSource
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -19,7 +21,7 @@ class TaskHandleTest {
         val engine = ChronoTaskEngine.create()
         engine.start()
 
-        val def = TaskDefinition("handle-task", "Handle Task", TaskSchedule.FixedRate(1000L), executable = {})
+        val def = TaskDefinition("handle-task", "Handle Task", TaskSchedule.FixedRate(1000L, 1000L), executable = {})
         val handle = engine.register(def)
 
         assertEquals(TaskState.SCHEDULED, handle.state)
@@ -42,23 +44,25 @@ class TaskHandleTest {
     @Test
     fun `triggerNow executes immediately with TriggerSource MANUAL`() = runBlocking {
         val executedCount = AtomicInteger(0)
+        val execution = CompletableDeferred<TriggerSource>()
         val engine = ChronoTaskEngine.create()
         engine.start()
 
         val def = TaskDefinition(
             id = "manual-task",
             name = "Manual Task",
-            schedule = TaskSchedule.FixedRate(10000L),
-            executable = { executedCount.incrementAndGet() }
+            schedule = TaskSchedule.FixedRate(10000L, initialDelayMs = 10000L),
+            executable = {
+                executedCount.incrementAndGet()
+                execution.complete(it.trigger.source)
+            }
         )
 
         val handle = engine.register(def)
         val result = handle.triggerNow()
 
         assertTrue(result is SubmissionResult.Started)
-        while (executedCount.get() == 0) {
-            kotlinx.coroutines.delay(10)
-        }
+        assertEquals(TriggerSource.MANUAL, withTimeout(5000) { execution.await() })
         assertEquals(1, executedCount.get())
 
         engine.stop()
@@ -67,14 +71,18 @@ class TaskHandleTest {
     @Test
     fun `triggerNow allowed while task is paused`() = runBlocking {
         val executedCount = AtomicInteger(0)
+        val execution = CompletableDeferred<TriggerSource>()
         val engine = ChronoTaskEngine.create()
         engine.start()
 
         val def = TaskDefinition(
             id = "paused-manual-task",
             name = "Paused Manual Task",
-            schedule = TaskSchedule.FixedRate(10000L),
-            executable = { executedCount.incrementAndGet() }
+            schedule = TaskSchedule.FixedRate(10000L, initialDelayMs = 10000L),
+            executable = {
+                executedCount.incrementAndGet()
+                execution.complete(it.trigger.source)
+            }
         )
 
         val handle = engine.register(def)
@@ -83,9 +91,7 @@ class TaskHandleTest {
         val result = handle.triggerNow()
         assertTrue(result is SubmissionResult.Started)
 
-        while (executedCount.get() == 0) {
-            kotlinx.coroutines.delay(10)
-        }
+        assertEquals(TriggerSource.MANUAL, withTimeout(5000) { execution.await() })
         assertEquals(1, executedCount.get())
 
         engine.stop()

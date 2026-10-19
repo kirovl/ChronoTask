@@ -11,10 +11,25 @@ plugins {
 }
 
 dependencies {
-    implementation("io.github.kirovl:chronotask-core:1.0.0")
-    ksp("io.github.kirovl:chronotask-ksp:1.0.0")
+    implementation("io.github.kirovl:chronotask-core:1.0.1")
+    ksp("io.github.kirovl:chronotask-ksp:1.0.1")
 }
 ```
+
+## Kotlin 1.9.10 consumers
+
+If your application uses Kotlin 1.9.10, select its matching KSP Gradle plugin:
+
+```kotlin
+id("com.google.devtools.ksp") version "1.9.10-1.0.13"
+```
+
+The ChronoTask dependencies remain `io.github.kirovl:chronotask-core:1.0.1` and
+`io.github.kirovl:chronotask-ksp:1.0.1`. A standalone JVM consumer has verified binding
+compilation and execution, including default fixed-delay scheduling, suspend methods,
+internal generic targets and declaration-site variance. This does not downgrade the
+library's transitive Kotlin runtime dependencies. The repository's own build and
+Android sample continue to use Kotlin 2.0.21 and KSP 2.0.21-1.0.27.
 
 ## Usage
 

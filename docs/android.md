@@ -14,10 +14,10 @@ plugins {
 
 dependencies {
     // Core runtime
-    implementation("io.github.kirovl:chronotask-core:1.0.0")
+    implementation("io.github.kirovl:chronotask-core:1.0.1")
 
     // Compile-time binding generation (Zero Reflection)
-    ksp("io.github.kirovl:chronotask-ksp:1.0.0")
+    ksp("io.github.kirovl:chronotask-ksp:1.0.1")
 }
 ```
 

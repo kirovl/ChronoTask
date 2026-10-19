@@ -46,18 +46,18 @@ depend on pre-existing Maven Local artifacts.
 
 `gradle.properties` defines the default `publicationGroup` and `releaseVersion`.
 All modules and their inter-module dependencies use those same values. To check a
-different version, add `-PreleaseVersion=1.0.1`.
+different version, add `-PreleaseVersion=1.0.2`.
 
 ## Publish from GitHub Actions
 
 After configuring the secrets, open **Actions → Release & Publish to Maven Central →
-Run workflow**, select `main` and enter the desired version, initially `1.0.0`.
+Run workflow**, select `main` and enter the desired version, for example `1.0.1`.
 
 Alternatively, create and push a version tag:
 
 ```bash
-git tag v1.0.0
-git push origin v1.0.0
+git tag v1.0.1
+git push origin v1.0.1
 ```
 
 The workflow takes the version from the tag or manual input, checks the credentials,
@@ -81,7 +81,7 @@ chat or place them in a checked-in file. Then run:
 ```bash
 ./gradlew validateCentralPublishing
 ./gradlew publishToMavenLocal test apiCheck
-./gradlew nmcpPublishAggregationToCentralPortal -PreleaseVersion=1.0.0
+./gradlew nmcpPublishAggregationToCentralPortal -PreleaseVersion=1.0.1
 ```
 
 The Gradle properties `mavenCentralUsername`, `mavenCentralPassword`, `signing.key`
@@ -92,7 +92,7 @@ To upload and validate but confirm publication manually in Central Portal, use:
 
 ```bash
 ./gradlew nmcpPublishAggregationToCentralPortal \
-  -PreleaseVersion=1.0.0 -PcentralPublishingType=USER_MANAGED
+  -PreleaseVersion=1.0.1 -PcentralPublishingType=USER_MANAGED
 ```
 
 ## Consumer coordinates
@@ -103,12 +103,12 @@ repositories {
 }
 
 dependencies {
-    implementation("io.github.kirovl:chronotask-core:1.0.0")
+    implementation("io.github.kirovl:chronotask-core:1.0.1")
     // Choose the registration approach appropriate for your project:
-    ksp("io.github.kirovl:chronotask-ksp:1.0.0")
-    // annotationProcessor("io.github.kirovl:chronotask-processor:1.0.0")
-    // implementation("io.github.kirovl:chronotask-reflect:1.0.0")
-    testImplementation("io.github.kirovl:chronotask-test:1.0.0")
+    ksp("io.github.kirovl:chronotask-ksp:1.0.1")
+    // annotationProcessor("io.github.kirovl:chronotask-processor:1.0.1")
+    // implementation("io.github.kirovl:chronotask-reflect:1.0.1")
+    testImplementation("io.github.kirovl:chronotask-test:1.0.1")
 }
 ```
 

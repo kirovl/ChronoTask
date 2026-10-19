@@ -18,12 +18,12 @@ class TaskRegistrationTest {
     fun `registering in CREATED, RUNNING and PAUSED states succeeds`() {
         val engine = ChronoTaskEngine.create()
 
-        val def1 = TaskDefinition("task-created", "Created Task", TaskSchedule.FixedRate(1000L), executable = {})
+        val def1 = TaskDefinition("task-created", "Created Task", TaskSchedule.FixedRate(1000L, 1000L), executable = {})
         val handle1 = engine.register(def1)
         assertEquals(TaskState.REGISTERED, handle1.state)
 
         engine.start()
-        val def2 = TaskDefinition("task-running", "Running Task", TaskSchedule.FixedRate(1000L), executable = {})
+        val def2 = TaskDefinition("task-running", "Running Task", TaskSchedule.FixedRate(1000L, 1000L), executable = {})
         val handle2 = engine.register(def2)
         assertEquals(TaskState.SCHEDULED, handle2.state)
 
